@@ -7,6 +7,7 @@ import '../../models/loan.dart';
 import '../../models/fund.dart';
 import '../../models/member.dart';
 import '../../providers/app_state_provider.dart';
+import '../../providers/loan_settings_provider.dart';
 import '../../services/database_service.dart';
 import '../../services/loan_service.dart';
 
@@ -324,29 +325,38 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen> {
               },
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _interestRateController,
-              decoration: const InputDecoration(
-                labelText: 'Interest Rate (% per annum)',
-                suffixText: '% per year',
-                border: OutlineInputBorder(),
-                helperText: 'Fixed monthly interest: CFA 3,150',
-              ),
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
-              ),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-              ],
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter interest rate';
-                }
-                final rate = double.tryParse(value);
-                if (rate == null || rate < 0 || rate > 100) {
-                  return 'Please enter a valid rate (0-100%)';
-                }
-                return null;
+            Consumer<LoanSettingsProvider>(
+              builder: (context, loanSettings, child) {
+                final monthlyRate = loanSettings
+                    .getCurrentMonthlyInterestRate();
+                return TextFormField(
+                  controller: _interestRateController,
+                  decoration: InputDecoration(
+                    labelText: 'Interest Rate (% per annum)',
+                    suffixText: '% per year',
+                    border: const OutlineInputBorder(),
+                    helperText:
+                        'Fixed monthly interest: CFA ${monthlyRate.toStringAsFixed(0)}',
+                  ),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d+\.?\d{0,2}'),
+                    ),
+                  ],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter interest rate';
+                    }
+                    final rate = double.tryParse(value);
+                    if (rate == null || rate < 0 || rate > 100) {
+                      return 'Please enter a valid rate (0-100%)';
+                    }
+                    return null;
+                  },
+                );
               },
             ),
           ],
@@ -633,8 +643,9 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen> {
       final term = int.parse(_termController.text);
       final interestRate = double.parse(_interestRateController.text);
 
-      // Month-by-month interest accumulation at 3150 per month
-      final monthlyInterest = 3150.0;
+      // Month-by-month interest accumulation using configurable rate
+      final loanSettings = context.read<LoanSettingsProvider>();
+      final monthlyInterest = loanSettings.getCurrentMonthlyInterestRate();
       final monthlyPrincipal = amount / term;
       final monthlyPayment = monthlyPrincipal + monthlyInterest;
 

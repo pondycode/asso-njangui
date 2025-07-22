@@ -3,6 +3,7 @@ import '../models/loan.dart';
 import '../models/fund.dart';
 import '../models/member.dart';
 import '../models/transaction.dart';
+import '../providers/loan_settings_provider.dart';
 import 'database_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,6 +15,7 @@ class LoanService {
   static LoanService get instance => _instance;
 
   final DatabaseService _db = DatabaseService.instance;
+  final LoanSettingsProvider _loanSettings = LoanSettingsProvider();
 
   /// Check if a member is eligible for a loan
   Future<LoanEligibilityResult> checkEligibility({
@@ -101,7 +103,7 @@ class LoanService {
         );
       }
 
-      // Check minimum contribution period (e.g., 6 months)
+      // Check minimum contribution period using configurable setting
       final firstContribution = fundContributions
           .map((c) => c.date)
           .reduce((a, b) => a.isBefore(b) ? a : b);
@@ -109,11 +111,13 @@ class LoanService {
       final monthsSinceFirstContribution =
           DateTime.now().difference(firstContribution).inDays / 30;
 
-      if (monthsSinceFirstContribution < 6) {
+      final minContributionMonths =
+          _loanSettings.settings.minimumContributionMonths;
+      if (monthsSinceFirstContribution < minContributionMonths) {
         return LoanEligibilityResult(
           isEligible: false,
           reason:
-              'Member must contribute for at least 6 months before borrowing',
+              'Member must contribute for at least $minContributionMonths months before borrowing',
         );
       }
 
@@ -137,9 +141,10 @@ class LoanService {
 
   /// Calculate maximum loan amount for a member
   double _calculateMaxLoanAmount(Member member, Fund fund) {
-    // Base calculation: 3x member's total contributions to the fund
+    // Base calculation: configurable ratio x member's total contributions to the fund
     final memberBalance = fund.memberBalances[member.id] ?? 0.0;
-    final baseAmount = memberBalance * 3;
+    final loanRatio = _loanSettings.settings.maxLoanToContributionRatio;
+    final baseAmount = memberBalance * loanRatio;
 
     // Cap at 50% of fund balance
     final maxFromFund = fund.balance * 0.5;
@@ -503,7 +508,10 @@ class LoanService {
         .fold(0.0, (sum, r) => sum + r.amount);
 
     // Simple interest calculation - month by month accumulation
-    // Interest is added each month at 3150 per month
+    // Interest is added each month based on configurable rate
+
+    // Get current monthly interest rate from settings
+    final monthlyInterestRate = _loanSettings.getCurrentMonthlyInterestRate();
 
     // Calculate remaining principal (payments go to principal first)
     final remainingPrincipal = math.max(
@@ -511,9 +519,9 @@ class LoanService {
       loan.principalAmount - totalPayments,
     );
 
-    // Total amount due = remaining principal + (3150 * elapsed months)
+    // Total amount due = remaining principal + (monthly rate * elapsed months)
     // This means interest accumulates month by month, not based on fixed term
-    final totalInterestDue = 3150.0 * monthsElapsed;
+    final totalInterestDue = monthlyInterestRate * monthsElapsed;
 
     // If principal is fully paid, apply remaining payments to interest
     double interestPaid = 0.0;

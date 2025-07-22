@@ -8,10 +8,12 @@ import 'models/transaction.dart';
 import 'models/loan.dart';
 import 'models/contribution.dart';
 import 'models/penalty.dart';
+import 'models/loan_settings.dart';
 import 'services/database_service.dart';
 import 'providers/app_state_provider.dart';
 import 'providers/language_provider.dart';
 import 'providers/contribution_settings_provider.dart';
+import 'providers/loan_settings_provider.dart';
 import 'screens/dashboard_screen.dart';
 import 'l10n/app_localizations.dart';
 
@@ -37,6 +39,7 @@ void main() async {
   Hive.registerAdapter(PenaltyTypeAdapter());
   Hive.registerAdapter(PenaltyStatusAdapter());
   Hive.registerAdapter(PenaltyCalculationTypeAdapter());
+  Hive.registerAdapter(LoanSettingsAdapter());
 
   // Initialize database service
   await DatabaseService.instance.init();
@@ -54,6 +57,7 @@ class FinancialManagementApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AppStateProvider()),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => ContributionSettingsProvider()),
+        ChangeNotifierProvider(create: (_) => LoanSettingsProvider()),
       ],
       child: const AppInitializer(),
     );
@@ -75,6 +79,7 @@ class _AppInitializerState extends State<AppInitializer> {
       context.read<LanguageProvider>().initialize();
       context.read<AppStateProvider>().initialize();
       context.read<ContributionSettingsProvider>().initialize();
+      context.read<LoanSettingsProvider>().initialize();
     });
   }
 

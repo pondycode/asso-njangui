@@ -276,9 +276,11 @@ class Loan extends Equatable {
     required double interestRate,
     required int termInMonths,
     required DateTime startDate,
+    double? monthlyInterestAmount,
   }) {
     final List<LoanRepayment> repayments = [];
-    final monthlyInterest = 3150.0; // Fixed monthly interest rate
+    final monthlyInterest =
+        monthlyInterestAmount ?? 3150.0; // Use provided rate or default
     final monthlyPrincipal = principalAmount / termInMonths;
     final monthlyPayment = monthlyPrincipal + monthlyInterest;
 

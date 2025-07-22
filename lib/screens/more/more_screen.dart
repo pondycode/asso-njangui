@@ -7,6 +7,7 @@ import '../../providers/app_state_provider.dart';
 import '../contributions/contribution_screen.dart';
 import '../contributions/contribution_list_screen.dart';
 import '../settings/contribution_settings_screen.dart';
+import '../settings/loan_settings_screen.dart';
 import '../settings/user_manual_screen.dart';
 import '../penalties/penalties_list_screen.dart';
 import '../members/add_member_screen.dart';
@@ -179,6 +180,13 @@ class MoreScreen extends StatelessWidget {
         Icons.account_balance_wallet,
         Colors.blue,
         () => _navigateToContributionSettings(context),
+      ),
+      _buildActionTile(
+        'Loan Settings',
+        'Configure loan interest rates and terms',
+        Icons.settings_applications,
+        Colors.indigo,
+        () => _navigateToLoanSettings(context),
       ),
       _buildActionTile(
         'App Settings',
@@ -380,6 +388,13 @@ class MoreScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => const ContributionSettingsScreen(),
       ),
+    );
+  }
+
+  void _navigateToLoanSettings(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoanSettingsScreen()),
     );
   }
 
