@@ -25,10 +25,11 @@ A comprehensive Flutter application for managing association finances, members, 
 
 ### 💳 Loan Management
 - Month-by-month interest accumulation system
-- Fixed monthly interest (3,150 CFA per month)
+- **Configurable monthly interest rates** (admin-controlled)
 - Payment tracking with principal-first allocation
 - Loan application and approval workflow
 - Balance calculations and payment schedules
+- Dynamic loan settings and validation
 
 ### ⚖️ Penalty Management
 - Multiple penalty types (Late fees, Missed contributions, etc.)
@@ -121,6 +122,15 @@ Configure default values for faster data entry:
 - Default host selection
 - Auto-fill preferences
 
+### Loan Settings
+Configure loan parameters for your association:
+- Monthly interest rates (customizable)
+- Minimum and maximum interest rate bounds
+- Loan term limits (months)
+- Loan-to-contribution ratios
+- Minimum contribution periods
+- Custom rate permissions
+
 ### Language Settings
 Switch between French and English:
 - Tap the language icon (🌐) in the dashboard
@@ -181,12 +191,13 @@ lib/
 
 ## 💡 Key Features Explained
 
-### Loan Interest System
-The app implements a unique month-by-month interest accumulation system:
-- **Fixed Monthly Rate**: 3,150 CFA per month
+### Dynamic Loan Interest System
+The app implements a flexible month-by-month interest accumulation system:
+- **Configurable Monthly Rate**: Admin-controlled (default: 3,150 CFA per month)
 - **Simple Interest**: No compounding
 - **Payment Priority**: Principal first, then interest
-- **Example**: 31,500 CFA loan after 10.8 months = 23,500 principal + 34,020 interest = 57,520 total
+- **Rate Management**: Set custom rates with validation and bounds
+- **Example**: 31,500 CFA loan at 3,150/month after 10.8 months = 23,500 principal + 34,020 interest = 57,520 total
 
 ### Smart Contribution Management
 - **Duplicate Detection**: Prevents same-day duplicate entries
@@ -244,6 +255,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Enhanced security features
 
 ### Version History
+- **v1.1.0**: Dynamic Interest Rate System
+  - Configurable monthly interest rates
+  - Admin loan settings interface
+  - Interest rate validation and bounds
+  - Loan parameter management
+  - Enhanced loan calculations
 - **v1.0.0**: Initial release with core features
   - Member management
   - Fund operations

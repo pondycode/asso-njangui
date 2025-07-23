@@ -344,14 +344,14 @@
   "interestAccumulation": "Interest accumulates each month regardless of payments",
   "expectedTerm": "Expected Term (Months)",
   "interestAccumulatesMonthly": "Interest accumulates monthly regardless of term",
-  "fixedMonthlyInterest": "Fixed monthly interest: CFA 3,150",
+  "fixedMonthlyInterest": "Monthly interest rate (configurable)",
   "interestDue": "Interest Due",
   "monthByMonthAccumulation": "Month-by-month accumulation",
-  "interestStructure": "CFA 3,150 added each month since loan start",
+  "interestStructure": "Configurable amount added each month since loan start",
   "monthsElapsed": "Months Elapsed",
   "monthByMonthInterestModel": "Month-by-Month Interest Model:",
-  "monthlyInterestFixed": "Monthly Interest = Fixed CFA 3,150",
-  "totalInterestDue": "Total Interest Due = CFA 3,150 × {months} months = {amount}",
+  "monthlyInterestFixed": "Monthly Interest = Configurable Rate",
+  "totalInterestDue": "Total Interest Due = Monthly Rate × {months} months = {amount}",
   "interestAccumulatesRegardless": "Interest accumulates each month regardless of payments",
 
   "management": "Management",
@@ -396,7 +396,7 @@
 
   "manualContributionManagementContent": "Record and track member contributions to various funds.\n\nMAKING CONTRIBUTIONS\n1. Tap 'Contribute' from Dashboard\n2. Select the member making the contribution\n3. Choose the fund to contribute to\n4. Enter contribution amount\n5. Set contribution date (defaults to today)\n6. Add notes if needed\n7. Submit the contribution\n\nCONTRIBUTION FEATURES\n• Duplicate detection - Warns if member already contributed on selected date\n• Multiple fund support - Contribute to different fund types\n• Contribution history - Track all past contributions\n• Default settings - Set default host and date preferences\n\nBULK CONTRIBUTIONS\n• Process multiple contributions at once\n• Import contribution data\n• Batch processing for efficiency\n\nREPORTING\n• View contribution summaries\n• Export contribution data\n• Generate contribution reports",
 
-  "manualLoanManagementContent": "Manage loan applications, approvals, and repayments.\n\nLOAN SYSTEM\nThe app uses a month-by-month interest model:\n• Interest accumulates each month regardless of payments\n• Fixed monthly interest rate\n• No fixed 12-month terms\n• Total amount due = Principal + (Monthly Interest × Months Elapsed)\n\nLOAN PROCESS\n1. Member applies for loan\n2. Review loan application\n3. Approve or reject loan\n4. Track loan payments and interest\n5. Monitor outstanding balances\n\nLOAN FEATURES\n• Flexible repayment terms\n• Interest calculation tracking\n• Payment history\n• Outstanding balance monitoring\n• Loan status management\n\nLOAN STATUSES\n• Pending - Awaiting approval\n• Approved - Loan approved and active\n• Completed - Fully repaid\n• Rejected - Application denied",
+  "manualLoanManagementContent": "Manage loan applications, approvals, and repayments.\n\nLOAN SYSTEM\nThe app uses a month-by-month interest model:\n• Interest accumulates each month regardless of payments\n• Configurable monthly interest rate (admin-controlled)\n• No fixed 12-month terms\n• Total amount due = Principal + (Monthly Interest × Months Elapsed)\n\nLOAN SETTINGS\n• Administrators can configure monthly interest rates\n• Set minimum and maximum rate bounds\n• Enable/disable custom rates for individual loans\n• Changes apply to new loans only\n\nLOAN PROCESS\n1. Member applies for loan\n2. Review loan application\n3. Approve or reject loan\n4. Track loan payments and interest\n5. Monitor outstanding balances\n\nLOAN FEATURES\n• Flexible repayment terms\n• Dynamic interest rate configuration\n• Interest calculation tracking\n• Payment history\n• Outstanding balance monitoring\n• Loan status management\n\nLOAN STATUSES\n• Pending - Awaiting approval\n• Approved - Loan approved and active\n• Completed - Fully repaid\n• Rejected - Application denied",
 
   "manualTransactionManagementContent": "View and manage all financial transactions in the system.\n\nTRANSACTION TYPES\n• Contributions - Member fund contributions\n• Loan Disbursements - Loan payments to members\n• Loan Repayments - Payments from borrowers\n• Penalties - Fines and penalty payments\n• Transfers - Fund transfers between accounts\n\nTRANSACTION DETAILS\nEach transaction includes:\n• Date and time\n• Member involved\n• Amount (credit or debit)\n• Fund affected\n• Description/notes\n• Reference number\n\nTRANSACTION MANAGEMENT\n• View transaction history\n• Filter by date, member, or type\n• Search transactions\n• Export transaction data\n• Generate financial reports\n\nACCESS POINTS\n• Dashboard - Recent transactions\n• Top navigation - Full transaction list\n• Member profiles - Member-specific transactions\n• Fund details - Fund-specific transactions",
 
@@ -404,5 +404,30 @@
 
   "manualSettingsConfigurationContent": "Configure the app to match your association's needs.\n\nCONTRIBUTION SETTINGS\n• Default Date Options - Set automatic date preferences\n• Default Host - Choose default contribution host\n• Contribution Frequency - Set regular contribution schedules\n\nFUND SETTINGS\n• Default Currency - Set primary currency (XAF)\n• Interest Rates - Configure default loan interest rates\n• Fund Categories - Customize fund types\n\nSYSTEM SETTINGS\n• Language - Switch between French and English\n• Data Backup - Create and restore data backups\n• Export Options - Configure data export formats\n\nUSER PREFERENCES\n• Dashboard Layout - Customize dashboard appearance\n• Notification Settings - Manage app notifications\n• Security Settings - Set app security preferences\n\nDATA MANAGEMENT\n• Refresh Data - Update all information\n• Export Data - Download data in various formats\n• Backup & Restore - Protect your association data",
 
-  "manualTipsAndBestPracticesContent": "Best practices for effective association management.\n\nDAILY OPERATIONS\n• Record contributions promptly\n• Update member information regularly\n• Review loan applications quickly\n• Monitor fund balances daily\n\nMONTHLY TASKS\n• Generate financial reports\n• Review member statuses\n• Process loan interest calculations\n• Backup association data\n\nBEST PRACTICES\n• Keep accurate records of all transactions\n• Communicate clearly with members about policies\n• Set clear contribution and loan guidelines\n• Regular data backups to prevent loss\n• Train multiple people on app usage\n\nTROUBLESHOoting\n• If app is slow, try refreshing data\n• For missing transactions, check filters\n• Contact support for technical issues\n• Keep app updated for best performance\n\nSECURITY TIPS\n• Regularly backup your data\n• Keep member information confidential\n• Use strong passwords if implemented\n• Monitor for unusual transactions\n\nGROWTH STRATEGIES\n• Track fund performance over time\n• Analyze member contribution patterns\n• Set realistic fund targets\n• Encourage regular member participation"
+  "manualTipsAndBestPracticesContent": "Best practices for effective association management.\n\nDAILY OPERATIONS\n• Record contributions promptly\n• Update member information regularly\n• Review loan applications quickly\n• Monitor fund balances daily\n\nMONTHLY TASKS\n• Generate financial reports\n• Review member statuses\n• Process loan interest calculations\n• Backup association data\n\nBEST PRACTICES\n• Keep accurate records of all transactions\n• Communicate clearly with members about policies\n• Set clear contribution and loan guidelines\n• Regular data backups to prevent loss\n• Train multiple people on app usage\n\nTROUBLESHOoting\n• If app is slow, try refreshing data\n• For missing transactions, check filters\n• Contact support for technical issues\n• Keep app updated for best performance\n\nSECURITY TIPS\n• Regularly backup your data\n• Keep member information confidential\n• Use strong passwords if implemented\n• Monitor for unusual transactions\n\nGROWTH STRATEGIES\n• Track fund performance over time\n• Analyze member contribution patterns\n• Set realistic fund targets\n• Encourage regular member participation",
+
+  "loanSettings": "Loan Settings",
+  "loanSettingsDescription": "Configure loan interest rates and terms",
+  "defaultMonthlyInterestRate": "Default Monthly Interest Rate",
+  "minimumInterestRate": "Minimum Interest Rate",
+  "maximumInterestRate": "Maximum Interest Rate",
+  "allowCustomRates": "Allow Custom Interest Rates",
+  "allowCustomRatesDescription": "Allow setting different rates for individual loans",
+  "minimumLoanTerm": "Minimum Loan Term (months)",
+  "maximumLoanTerm": "Maximum Loan Term (months)",
+  "maxLoanToContributionRatio": "Max Loan to Contribution Ratio",
+  "maxLoanToContributionRatioDescription": "How many times member contributions can be borrowed",
+  "minimumContributionPeriod": "Minimum Contribution Period (months)",
+  "minimumContributionPeriodDescription": "Required months of contributions before loan eligibility",
+  "resetToDefaults": "Reset to Defaults",
+  "resetToDefaultsDescription": "Restore original settings (3,150 CFA monthly rate)",
+  "resetToDefaultsConfirmation": "Are you sure you want to reset all loan settings to their default values? This action cannot be undone.",
+  "loanSettingsSaved": "Loan settings saved successfully",
+  "settingsResetToDefaults": "Settings reset to defaults",
+  "interestRateSettings": "Interest Rate Settings",
+  "loanTermSettings": "Loan Term Settings",
+  "loanLimits": "Loan Limits",
+  "actions": "Actions",
+  "configureLoanParameters": "Configure loan parameters for your association",
+  "changesAffectNewLoansOnly": "Changes only affect new loans. Existing loans keep their original rates."
 }

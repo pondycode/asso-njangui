@@ -147,10 +147,11 @@ Set default values to speed up contribution entry:
 
 ### Loan System Overview
 The app uses a **month-by-month interest accumulation** system:
-- **Fixed Monthly Interest**: 3,150 CFA per month
+- **Configurable Monthly Interest**: Admin-controlled rate (default: 3,150 CFA per month)
 - **Simple Interest**: No compounding
 - **Accumulation**: Interest adds up each month regardless of payments
 - **Payment Priority**: Payments go to principal first, then interest
+- **Dynamic Rates**: Interest rates can be adjusted by administrators
 
 ### Applying for Loans
 1. **Dashboard** → **New Loan** or **More** → **Apply for Loan**
@@ -164,11 +165,17 @@ The app uses a **month-by-month interest accumulation** system:
    - **Collateral** - Optional security
 
 ### Loan Calculations
-**Example**: 31,500 CFA loan issued August 31, 2024
+**Example**: 31,500 CFA loan issued August 31, 2024 (at default 3,150 CFA/month rate)
 - **After 10.8 months** (July 21, 2025):
   - Principal remaining: 23,500 CFA (after 8,000 payment)
   - Interest due: 3,150 × 10.8 = 34,020 CFA
   - **Total due**: 57,520 CFA
+
+**With Different Rate**: Same loan at 2,500 CFA/month rate
+- **After 10.8 months**:
+  - Principal remaining: 23,500 CFA (same payment)
+  - Interest due: 2,500 × 10.8 = 27,000 CFA
+  - **Total due**: 50,500 CFA (7,020 CFA less)
 
 ### Loan Management Features
 - **Balance Tracking** - Real-time balance calculations
@@ -182,6 +189,27 @@ The app uses a **month-by-month interest accumulation** system:
 2. **Make Payment** button
 3. Enter payment amount
 4. Payment automatically applied (principal first)
+
+### Configuring Interest Rates (Admin)
+**More** → **Settings** → **Loan Settings**
+
+#### Setting Monthly Interest Rates
+1. **Access Settings** - Navigate to Loan Settings
+2. **Set Default Rate** - Enter desired monthly interest amount
+3. **Configure Bounds** - Set minimum and maximum allowed rates
+4. **Enable Custom Rates** - Allow different rates for individual loans
+5. **Save Changes** - Apply settings to new loans
+
+#### Example Rate Changes
+- **Lower Rate**: Change from 3,150 to 2,500 CFA/month for reduced burden
+- **Higher Rate**: Increase to 4,000 CFA/month for better returns
+- **Tiered Rates**: Use custom rates based on loan amount or member status
+
+#### Important Notes
+- ⚠️ **Existing Loans**: Rate changes don't affect existing loans
+- ✅ **New Loans**: All new loans use current settings
+- 🔄 **Validation**: System prevents invalid rate configurations
+- 📊 **Impact**: Consider member affordability when setting rates
 
 ---
 
@@ -262,6 +290,30 @@ Create automatic penalty rules:
 - **Default Host** - Pre-select host member
 - **Preview** - See how defaults will appear
 
+### Loan Settings
+**More** → **Settings** → **Loan Settings**
+Configure loan parameters for your association:
+
+#### Interest Rate Settings
+- **Default Monthly Interest Rate** - Set the standard monthly interest amount
+- **Minimum Interest Rate** - Lower bound for custom rates
+- **Maximum Interest Rate** - Upper bound for custom rates
+- **Allow Custom Rates** - Enable/disable custom rates for individual loans
+
+#### Loan Term Settings
+- **Minimum Term** - Shortest allowed loan period (months)
+- **Maximum Term** - Longest allowed loan period (months)
+
+#### Loan Limits
+- **Max Loan to Contribution Ratio** - How many times member contributions can be borrowed
+- **Minimum Contribution Period** - Required months of contributions before loan eligibility
+
+#### Actions
+- **Reset to Defaults** - Restore original settings (3,150 CFA monthly rate)
+- **Save Settings** - Apply changes to new loans
+
+> **Note**: Changes only affect new loans. Existing loans keep their original rates.
+
 ### App Settings
 **More** → **Settings** → **App Settings**
 - **Language** - French/English
@@ -302,6 +354,9 @@ Create automatic penalty rules:
 2. **Regular Monitoring** - Check loan status weekly
 3. **Payment Tracking** - Record all payments promptly
 4. **Interest Awareness** - Remember interest accumulates monthly
+5. **Rate Management** - Review and adjust interest rates as needed
+6. **Settings Review** - Periodically review loan settings for fairness
+7. **Rate Communication** - Inform members of any rate changes
 
 ### Penalty Management
 1. **Clear Rules** - Establish clear penalty policies
