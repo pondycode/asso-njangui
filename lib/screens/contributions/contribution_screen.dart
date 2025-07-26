@@ -7,6 +7,7 @@ import '../../models/fund.dart';
 import '../../models/member.dart';
 import '../../providers/app_state_provider.dart';
 import '../../providers/contribution_settings_provider.dart';
+import '../../providers/fund_settings_provider.dart';
 import '../../services/contribution_service.dart';
 import '../../utils/currency_formatter.dart';
 import '../settings/contribution_settings_screen.dart';
@@ -34,8 +35,8 @@ class _ContributionScreenState extends State<ContributionScreen> {
 
   // Bulk payment mode
   bool _isBulkMode = false;
-  Map<String, TextEditingController> _bulkAmountControllers = {};
-  Map<String, double> _bulkAmounts = {};
+  final Map<String, TextEditingController> _bulkAmountControllers = {};
+  final Map<String, double> _bulkAmounts = {};
 
   @override
   void initState() {
@@ -43,9 +44,18 @@ class _ContributionScreenState extends State<ContributionScreen> {
     _selectedFund = widget.selectedFund;
     _selectedMember = widget.selectedMember;
 
-    // Set default amount of 3500 for pre-selected Savings funds
+    // Set default amount for pre-selected Savings funds from settings
     if (_selectedFund != null && _selectedFund!.type == FundType.savings) {
-      _amountController.text = '3500';
+      final fundSettings = Provider.of<FundSettingsProvider>(
+        context,
+        listen: false,
+      );
+      final defaultAmount = fundSettings.getDefaultAmountForFund(
+        _selectedFund!,
+      );
+      if (defaultAmount > 0) {
+        _amountController.text = defaultAmount.toString();
+      }
     }
 
     _initializeBulkControllers();
@@ -77,14 +87,19 @@ class _ContributionScreenState extends State<ContributionScreen> {
 
   void _initializeBulkControllers() {
     final appState = Provider.of<AppStateProvider>(context, listen: false);
+    final fundSettings = Provider.of<FundSettingsProvider>(
+      context,
+      listen: false,
+    );
     final activeFunds = appState.funds.where((fund) => fund.isActive).toList();
 
     for (final fund in activeFunds) {
       final controller = TextEditingController();
-      // Set default amount of 3500 for Savings funds
-      if (fund.type == FundType.savings) {
-        controller.text = '3500';
-        _bulkAmounts[fund.id] = 3500.0;
+      // Set default amount from fund settings
+      final defaultAmount = fundSettings.getDefaultAmountForFund(fund);
+      if (defaultAmount > 0) {
+        controller.text = defaultAmount.toString();
+        _bulkAmounts[fund.id] = defaultAmount;
       } else {
         _bulkAmounts[fund.id] = 0.0;
       }
@@ -1110,6 +1125,15 @@ class _ContributionScreenState extends State<ContributionScreen> {
       return;
     }
 
+    // Check for duplicate contributions on the same date
+    final hasDuplicate = await _checkForDuplicateContribution();
+    if (hasDuplicate) {
+      final shouldProceed = await _showDuplicateBulkContributionDialog();
+      if (!shouldProceed) {
+        return;
+      }
+    }
+
     setState(() {
       _isLoading = true;
     });
@@ -1274,6 +1298,147 @@ class _ContributionScreenState extends State<ContributionScreen> {
                 const SizedBox(height: 16),
                 const Text(
                   'Do you want to proceed with this additional contribution?',
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Proceed Anyway'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  /// Show dialog to confirm proceeding with duplicate bulk contribution
+  Future<bool> _showDuplicateBulkContributionDialog() async {
+    final existingContributions = context
+        .read<AppStateProvider>()
+        .contributions
+        .where((contribution) {
+          return contribution.memberId == _selectedMember!.id &&
+              contribution.date.year == _selectedDate.year &&
+              contribution.date.month == _selectedDate.month &&
+              contribution.date.day == _selectedDate.day;
+        })
+        .toList();
+
+    final contributionsToMake = _bulkAmounts.entries
+        .where((entry) => entry.value > 0)
+        .toList();
+
+    final appState = context.read<AppStateProvider>();
+    final fundNames = contributionsToMake.map((entry) {
+      final fund = appState.funds.firstWhere((f) => f.id == entry.key);
+      return '${fund.name}: ${CurrencyFormatter.format(entry.value)}';
+    }).toList();
+
+    return await showDialog<bool>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            title: Row(
+              children: [
+                Icon(Icons.warning, color: Colors.orange[700]),
+                const SizedBox(width: 8),
+                const Text('Duplicate Bulk Contribution Detected'),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${_selectedMember!.fullName} already has ${existingContributions.length} contribution${existingContributions.length > 1 ? 's' : ''} on ${DateFormat('EEEE, MMM dd, yyyy').format(_selectedDate)}:',
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.orange[50],
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.orange[200]!),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Existing Contributions:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      ...existingContributions.map((contribution) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.receipt,
+                                size: 14,
+                                color: Colors.orange[700],
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  '${contribution.fundNames.join(', ')}: ${CurrencyFormatter.format(contribution.totalAmount)}',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'New Bulk Contribution:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      ...fundNames.map((fundInfo) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.add_circle,
+                                size: 14,
+                                color: Colors.green[700],
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  fundInfo,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Do you want to proceed with this additional bulk contribution?',
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ],

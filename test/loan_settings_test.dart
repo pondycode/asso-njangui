@@ -7,9 +7,9 @@ void main() {
     test('should create default loan settings', () {
       final settings = LoanSettings.defaultSettings();
 
-      expect(settings.defaultMonthlyInterestRate, equals(3150.0));
-      expect(settings.minimumInterestRate, equals(1000.0));
-      expect(settings.maximumInterestRate, equals(10000.0));
+      expect(settings.monthlyInterestRatePercentage, equals(5.0));
+      expect(settings.minimumInterestRatePercentage, equals(1.0));
+      expect(settings.maximumInterestRatePercentage, equals(20.0));
       expect(settings.allowCustomRates, isTrue);
       expect(settings.minimumLoanTermMonths, equals(1));
       expect(settings.maximumLoanTermMonths, equals(60));
@@ -20,19 +20,19 @@ void main() {
     test('should update loan settings with copyWith', () {
       final originalSettings = LoanSettings.defaultSettings();
       final updatedSettings = originalSettings.copyWith(
-        defaultMonthlyInterestRate: 4000.0,
-        minimumInterestRate: 2000.0,
-        maximumInterestRate: 8000.0,
+        monthlyInterestRatePercentage: 8.0,
+        minimumInterestRatePercentage: 2.0,
+        maximumInterestRatePercentage: 15.0,
         updatedBy: 'Test',
       );
 
-      expect(updatedSettings.defaultMonthlyInterestRate, equals(4000.0));
-      expect(updatedSettings.minimumInterestRate, equals(2000.0));
-      expect(updatedSettings.maximumInterestRate, equals(8000.0));
+      expect(updatedSettings.monthlyInterestRatePercentage, equals(8.0));
+      expect(updatedSettings.minimumInterestRatePercentage, equals(2.0));
+      expect(updatedSettings.maximumInterestRatePercentage, equals(15.0));
       expect(updatedSettings.updatedBy, equals('Test'));
 
       // Original should remain unchanged
-      expect(originalSettings.defaultMonthlyInterestRate, equals(3150.0));
+      expect(originalSettings.monthlyInterestRatePercentage, equals(5.0));
     });
 
     test('should serialize and deserialize loan settings', () {
@@ -41,16 +41,16 @@ void main() {
       final deserializedSettings = LoanSettings.fromJson(json);
 
       expect(
-        deserializedSettings.defaultMonthlyInterestRate,
-        equals(originalSettings.defaultMonthlyInterestRate),
+        deserializedSettings.monthlyInterestRatePercentage,
+        equals(originalSettings.monthlyInterestRatePercentage),
       );
       expect(
-        deserializedSettings.minimumInterestRate,
-        equals(originalSettings.minimumInterestRate),
+        deserializedSettings.minimumInterestRatePercentage,
+        equals(originalSettings.minimumInterestRatePercentage),
       );
       expect(
-        deserializedSettings.maximumInterestRate,
-        equals(originalSettings.maximumInterestRate),
+        deserializedSettings.maximumInterestRatePercentage,
+        equals(originalSettings.maximumInterestRatePercentage),
       );
       expect(
         deserializedSettings.allowCustomRates,
@@ -60,6 +60,29 @@ void main() {
         deserializedSettings.maxLoanToContributionRatio,
         equals(originalSettings.maxLoanToContributionRatio),
       );
+    });
+
+    test('should calculate monthly interest correctly', () {
+      final settings = LoanSettings.defaultSettings(); // 5% rate
+
+      expect(
+        settings.calculateMonthlyInterest(100000.0),
+        equals(5000.0),
+      ); // 5% of 100000
+      expect(
+        settings.calculateMonthlyInterest(50000.0),
+        equals(2500.0),
+      ); // 5% of 50000
+      expect(settings.calculateMonthlyInterest(0.0), equals(0.0)); // 5% of 0
+
+      // Test with custom rate
+      final customSettings = settings.copyWith(
+        monthlyInterestRatePercentage: 10.0,
+      );
+      expect(
+        customSettings.calculateMonthlyInterest(100000.0),
+        equals(10000.0),
+      ); // 10% of 100000
     });
 
     test('should generate repayment schedule with configurable rate', () {
@@ -83,7 +106,7 @@ void main() {
     });
 
     test(
-      'should generate repayment schedule with default rate when no custom rate provided',
+      'should generate repayment schedule with provided monthly interest amount',
       () {
         final schedule = Loan.generateRepaymentSchedule(
           loanId: 'test-loan',
@@ -91,16 +114,16 @@ void main() {
           interestRate: 12.0,
           termInMonths: 6,
           startDate: DateTime.now(),
-          // No monthlyInterestAmount provided - should use default 3150
+          monthlyInterestAmount: 3000.0, // 5% of 60000
         );
 
         expect(schedule.length, equals(6));
 
-        // Each payment should have the default interest amount
+        // Each payment should have the provided interest amount
         for (final payment in schedule) {
-          expect(payment.interestAmount, equals(3150.0));
+          expect(payment.interestAmount, equals(3000.0));
           expect(payment.principalAmount, equals(10000.0)); // 60000 / 6
-          expect(payment.amount, equals(13150.0)); // 10000 + 3150
+          expect(payment.amount, equals(13000.0)); // 10000 + 3000
         }
       },
     );

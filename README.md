@@ -25,7 +25,8 @@ A comprehensive Flutter application for managing association finances, members, 
 
 ### 💳 Loan Management
 - Month-by-month interest accumulation system
-- **Configurable monthly interest rates** (admin-controlled)
+- **Configurable percentage-based interest rates** (admin-controlled)
+- Interest calculated as percentage of principal amount
 - Payment tracking with principal-first allocation
 - Loan application and approval workflow
 - Balance calculations and payment schedules
@@ -124,8 +125,8 @@ Configure default values for faster data entry:
 
 ### Loan Settings
 Configure loan parameters for your association:
-- Monthly interest rates (customizable)
-- Minimum and maximum interest rate bounds
+- Monthly interest rates as percentage of principal (customizable)
+- Minimum and maximum interest rate percentage bounds
 - Loan term limits (months)
 - Loan-to-contribution ratios
 - Minimum contribution periods
@@ -193,11 +194,13 @@ lib/
 
 ### Dynamic Loan Interest System
 The app implements a flexible month-by-month interest accumulation system:
-- **Configurable Monthly Rate**: Admin-controlled (default: 3,150 CFA per month)
-- **Simple Interest**: No compounding
+- **Percentage-Based Monthly Rate**: Admin-controlled (default: 5% of principal per month)
+- **Scalable Interest**: Interest amount automatically adjusts based on loan size
+- **Simple Interest**: No compounding, calculated monthly on original principal
 - **Payment Priority**: Principal first, then interest
-- **Rate Management**: Set custom rates with validation and bounds
-- **Example**: 31,500 CFA loan at 3,150/month after 10.8 months = 23,500 principal + 34,020 interest = 57,520 total
+- **Rate Management**: Set custom percentage rates with validation and bounds
+- **Example**: 100,000 CFA loan at 5%/month = 5,000 CFA monthly interest
+- **Example**: 50,000 CFA loan at 5%/month = 2,500 CFA monthly interest
 
 ### Smart Contribution Management
 - **Duplicate Detection**: Prevents same-day duplicate entries
@@ -255,6 +258,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Enhanced security features
 
 ### Version History
+- **v1.2.0**: Percentage-Based Interest System
+  - Configurable percentage-based monthly interest rates
+  - Interest scales automatically with loan amount
+  - Enhanced admin loan settings interface
+  - Interest rate validation and percentage bounds
+  - Improved loan parameter management
+  - Real-time interest calculations
 - **v1.1.0**: Dynamic Interest Rate System
   - Configurable monthly interest rates
   - Admin loan settings interface

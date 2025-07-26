@@ -6,13 +6,13 @@ part 'loan_settings.g.dart';
 @HiveType(typeId: 9)
 class LoanSettings extends Equatable {
   @HiveField(0)
-  final double defaultMonthlyInterestRate;
+  final double monthlyInterestRatePercentage;
 
   @HiveField(1)
-  final double minimumInterestRate;
+  final double minimumInterestRatePercentage;
 
   @HiveField(2)
-  final double maximumInterestRate;
+  final double maximumInterestRatePercentage;
 
   @HiveField(3)
   final bool allowCustomRates;
@@ -39,9 +39,9 @@ class LoanSettings extends Equatable {
   final Map<String, dynamic> metadata;
 
   const LoanSettings({
-    required this.defaultMonthlyInterestRate,
-    this.minimumInterestRate = 1000.0,
-    this.maximumInterestRate = 10000.0,
+    required this.monthlyInterestRatePercentage,
+    this.minimumInterestRatePercentage = 1.0,
+    this.maximumInterestRatePercentage = 20.0,
     this.allowCustomRates = true,
     this.minimumLoanTermMonths = 1,
     this.maximumLoanTermMonths = 60,
@@ -52,18 +52,23 @@ class LoanSettings extends Equatable {
     this.metadata = const {},
   });
 
+  /// Calculate monthly interest amount for a given principal
+  double calculateMonthlyInterest(double principalAmount) {
+    return principalAmount * (monthlyInterestRatePercentage / 100);
+  }
+
   // Default settings factory
   factory LoanSettings.defaultSettings() {
     return LoanSettings(
-      defaultMonthlyInterestRate: 3150.0, // Current default
+      monthlyInterestRatePercentage: 5.0, // 5% of principal per month
       lastUpdated: DateTime.now(),
     );
   }
 
   LoanSettings copyWith({
-    double? defaultMonthlyInterestRate,
-    double? minimumInterestRate,
-    double? maximumInterestRate,
+    double? monthlyInterestRatePercentage,
+    double? minimumInterestRatePercentage,
+    double? maximumInterestRatePercentage,
     bool? allowCustomRates,
     int? minimumLoanTermMonths,
     int? maximumLoanTermMonths,
@@ -74,14 +79,21 @@ class LoanSettings extends Equatable {
     Map<String, dynamic>? metadata,
   }) {
     return LoanSettings(
-      defaultMonthlyInterestRate: defaultMonthlyInterestRate ?? this.defaultMonthlyInterestRate,
-      minimumInterestRate: minimumInterestRate ?? this.minimumInterestRate,
-      maximumInterestRate: maximumInterestRate ?? this.maximumInterestRate,
+      monthlyInterestRatePercentage:
+          monthlyInterestRatePercentage ?? this.monthlyInterestRatePercentage,
+      minimumInterestRatePercentage:
+          minimumInterestRatePercentage ?? this.minimumInterestRatePercentage,
+      maximumInterestRatePercentage:
+          maximumInterestRatePercentage ?? this.maximumInterestRatePercentage,
       allowCustomRates: allowCustomRates ?? this.allowCustomRates,
-      minimumLoanTermMonths: minimumLoanTermMonths ?? this.minimumLoanTermMonths,
-      maximumLoanTermMonths: maximumLoanTermMonths ?? this.maximumLoanTermMonths,
-      maxLoanToContributionRatio: maxLoanToContributionRatio ?? this.maxLoanToContributionRatio,
-      minimumContributionMonths: minimumContributionMonths ?? this.minimumContributionMonths,
+      minimumLoanTermMonths:
+          minimumLoanTermMonths ?? this.minimumLoanTermMonths,
+      maximumLoanTermMonths:
+          maximumLoanTermMonths ?? this.maximumLoanTermMonths,
+      maxLoanToContributionRatio:
+          maxLoanToContributionRatio ?? this.maxLoanToContributionRatio,
+      minimumContributionMonths:
+          minimumContributionMonths ?? this.minimumContributionMonths,
       lastUpdated: lastUpdated ?? this.lastUpdated,
       updatedBy: updatedBy ?? this.updatedBy,
       metadata: metadata ?? this.metadata,
@@ -90,9 +102,9 @@ class LoanSettings extends Equatable {
 
   @override
   List<Object?> get props => [
-    defaultMonthlyInterestRate,
-    minimumInterestRate,
-    maximumInterestRate,
+    monthlyInterestRatePercentage,
+    minimumInterestRatePercentage,
+    maximumInterestRatePercentage,
     allowCustomRates,
     minimumLoanTermMonths,
     maximumLoanTermMonths,
@@ -105,9 +117,9 @@ class LoanSettings extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'defaultMonthlyInterestRate': defaultMonthlyInterestRate,
-      'minimumInterestRate': minimumInterestRate,
-      'maximumInterestRate': maximumInterestRate,
+      'monthlyInterestRatePercentage': monthlyInterestRatePercentage,
+      'minimumInterestRatePercentage': minimumInterestRatePercentage,
+      'maximumInterestRatePercentage': maximumInterestRatePercentage,
       'allowCustomRates': allowCustomRates,
       'minimumLoanTermMonths': minimumLoanTermMonths,
       'maximumLoanTermMonths': maximumLoanTermMonths,
@@ -121,13 +133,17 @@ class LoanSettings extends Equatable {
 
   factory LoanSettings.fromJson(Map<String, dynamic> json) {
     return LoanSettings(
-      defaultMonthlyInterestRate: (json['defaultMonthlyInterestRate'] ?? 3150.0).toDouble(),
-      minimumInterestRate: (json['minimumInterestRate'] ?? 1000.0).toDouble(),
-      maximumInterestRate: (json['maximumInterestRate'] ?? 10000.0).toDouble(),
+      monthlyInterestRatePercentage:
+          (json['monthlyInterestRatePercentage'] ?? 5.0).toDouble(),
+      minimumInterestRatePercentage:
+          (json['minimumInterestRatePercentage'] ?? 1.0).toDouble(),
+      maximumInterestRatePercentage:
+          (json['maximumInterestRatePercentage'] ?? 20.0).toDouble(),
       allowCustomRates: json['allowCustomRates'] ?? true,
       minimumLoanTermMonths: json['minimumLoanTermMonths'] ?? 1,
       maximumLoanTermMonths: json['maximumLoanTermMonths'] ?? 60,
-      maxLoanToContributionRatio: (json['maxLoanToContributionRatio'] ?? 3.0).toDouble(),
+      maxLoanToContributionRatio: (json['maxLoanToContributionRatio'] ?? 3.0)
+          .toDouble(),
       minimumContributionMonths: json['minimumContributionMonths'] ?? 6,
       lastUpdated: DateTime.parse(json['lastUpdated']),
       updatedBy: json['updatedBy'] ?? 'System',
@@ -137,6 +153,6 @@ class LoanSettings extends Equatable {
 
   @override
   String toString() {
-    return 'LoanSettings(defaultRate: $defaultMonthlyInterestRate, allowCustom: $allowCustomRates)';
+    return 'LoanSettings(monthlyRate: $monthlyInterestRatePercentage%, allowCustom: $allowCustomRates)';
   }
 }

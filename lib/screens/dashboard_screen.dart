@@ -24,14 +24,6 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AppStateProvider>().initialize();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
@@ -55,6 +47,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
+          Consumer<AppStateProvider>(
+            builder: (context, appState, child) {
+              return IconButton(
+                icon: const Icon(Icons.refresh),
+                tooltip: 'Refresh Data',
+                onPressed: () {
+                  appState.refresh();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Data refreshed successfully'),
+                      backgroundColor: Colors.green,
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.receipt_long),
             tooltip: l10n.transactions,
@@ -152,10 +162,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Summary Cards
-                _buildSummaryCards(appState),
-                const SizedBox(height: 24),
-
                 // Quick Actions
                 _buildQuickActions(context),
                 const SizedBox(height: 24),
@@ -166,6 +172,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                 // Recent Activity
                 _buildRecentActivity(appState),
+                const SizedBox(height: 24),
+
+                // Financial Overview (moved to bottom)
+                _buildSummaryCards(appState),
               ],
             ),
           );

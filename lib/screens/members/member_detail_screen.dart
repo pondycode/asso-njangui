@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import '../../providers/app_state_provider.dart';
 import '../../models/member.dart';
 import '../../models/fund.dart';
-import '../../utils/currency_formatter.dart';
 import 'edit_member_screen.dart';
 
 class MemberDetailScreen extends StatefulWidget {

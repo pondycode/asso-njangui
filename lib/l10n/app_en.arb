@@ -388,7 +388,7 @@
 
   "manualGettingStartedContent": "Welcome to the Association Management App!\n\nFIRST LAUNCH\nWhen you first open the app, you'll see the Dashboard with quick action buttons and summary cards. The app uses a bottom navigation bar with 5 main sections:\n\n• 🏠 Dashboard - Overview and quick actions\n• 👥 Members - Member management  \n• 💰 Funds - Fund management\n• 💳 Loans - Loan management\n• ⋯ More - Additional features and settings\n\nLANGUAGE SUPPORT\nThe app supports both French and English. To change language:\n1. Tap the language icon (🌐) in the top-right corner of the Dashboard\n2. Select your preferred language from the dropdown\n\nNAVIGATION\nUse the bottom navigation bar to switch between main sections. Swipe left/right to navigate between tabs quickly.",
 
-  "manualDashboardContent": "The Dashboard is your command center for quick access to common tasks.\n\nQUICK ACTIONS\n• 👤 Add Member - Register new association members\n• 💰 Contribute - Record member contributions  \n• 💳 New Loan - Apply for or process loans\n\nSUMMARY CARDS\nView key metrics at a glance:\n• Total Members - Active member count\n• Total Funds - Available fund balance\n• Active Loans - Current loan statistics\n• Recent Activity - Latest transactions\n\nTOP NAVIGATION\n• 🧾 Transactions - Quick access to transaction list\n• 🌐 Language - Switch between French/English\n\nThe dashboard automatically refreshes to show the latest information.",
+  "manualDashboardContent": "The Dashboard is your command center for quick access to common tasks.\n\nQUICK ACTIONS\n• 👤 Add Member - Register new association members\n• 💰 Contribute - Record member contributions  \n• 💳 New Loan - Apply for or process loans\n\nSUMMARY CARDS\nView key metrics at a glance:\n• Total Members - Active member count\n• Total Funds - Available fund balance (displayed in F currency)\n• Active Loans - Current loan statistics\n• Recent Activity - Latest transactions\n\nTOP NAVIGATION\n• 🔄 Refresh - Manually refresh all data (new feature)\n• 🧾 Transactions - Quick access to transaction list\n• 🌐 Language - Switch between French/English\n\nREFRESH FUNCTIONALITY (New)\n• Tap the refresh icon (🔄) in the top-right corner to update all data\n• Shows a green success message when refresh is complete\n• Useful when data seems outdated or after making changes\n• Also available in More screen under settings\n\nCURRENCY DISPLAY\n• All amounts now display in 'F' instead of 'XAF'\n• Existing data unchanged, only display format updated\n• Consistent currency format throughout the app\n\nThe dashboard automatically refreshes to show the latest information, and you can manually refresh anytime using the refresh button.",
 
   "manualMemberManagementContent": "Manage all association members efficiently.\n\nADDING MEMBERS\n1. Tap 'Add Member' from Dashboard or Members screen\n2. Fill in required information:\n   • First Name and Last Name\n   • Phone Number (for contact)\n   • Email Address (optional)\n   • Membership Date\n3. Tap 'Save' to create the member profile\n\nMEMBER STATUS\n• Active - Can participate in all activities\n• Inactive - Limited participation\n• Suspended - Temporarily restricted\n• Pending - Awaiting approval\n\nSEARCH & FILTER\n• Use the search bar to find members quickly\n• Filter by status to view specific groups\n• Sort by name, date joined, or status\n\nMEMBER ACTIONS\n• View Details - See complete member information\n• Edit Profile - Update member information\n• View Contributions - See contribution history\n• Manage Penalties - Handle fines and penalties",
 
@@ -396,19 +396,23 @@
 
   "manualContributionManagementContent": "Record and track member contributions to various funds.\n\nMAKING CONTRIBUTIONS\n1. Tap 'Contribute' from Dashboard\n2. Select the member making the contribution\n3. Choose the fund to contribute to\n4. Enter contribution amount\n5. Set contribution date (defaults to today)\n6. Add notes if needed\n7. Submit the contribution\n\nCONTRIBUTION FEATURES\n• Duplicate detection - Warns if member already contributed on selected date\n• Multiple fund support - Contribute to different fund types\n• Contribution history - Track all past contributions\n• Default settings - Set default host and date preferences\n\nBULK CONTRIBUTIONS\n• Process multiple contributions at once\n• Import contribution data\n• Batch processing for efficiency\n\nREPORTING\n• View contribution summaries\n• Export contribution data\n• Generate contribution reports",
 
-  "manualLoanManagementContent": "Manage loan applications, approvals, and repayments.\n\nLOAN SYSTEM\nThe app uses a month-by-month interest model:\n• Interest accumulates each month regardless of payments\n• Configurable monthly interest rate (admin-controlled)\n• No fixed 12-month terms\n• Total amount due = Principal + (Monthly Interest × Months Elapsed)\n\nLOAN SETTINGS\n• Administrators can configure monthly interest rates\n• Set minimum and maximum rate bounds\n• Enable/disable custom rates for individual loans\n• Changes apply to new loans only\n\nLOAN PROCESS\n1. Member applies for loan\n2. Review loan application\n3. Approve or reject loan\n4. Track loan payments and interest\n5. Monitor outstanding balances\n\nLOAN FEATURES\n• Flexible repayment terms\n• Dynamic interest rate configuration\n• Interest calculation tracking\n• Payment history\n• Outstanding balance monitoring\n• Loan status management\n\nLOAN STATUSES\n• Pending - Awaiting approval\n• Approved - Loan approved and active\n• Completed - Fully repaid\n• Rejected - Application denied",
+  "manualLoanManagementContent": "Manage loan applications, approvals, and repayments with percentage-based interest.\n\nPERCENTAGE-BASED LOAN SYSTEM\nThe app uses a dynamic month-by-month interest model:\n• Interest calculated as percentage of principal amount\n• Interest accumulates each month regardless of payments\n• Configurable monthly interest percentage (default: 5%)\n• No fixed 12-month terms\n• Total amount due = Principal + (Principal × Rate% × Months Elapsed)\n\nINTEREST EXAMPLES\n• 100,000 CFA loan at 5% = 5,000 CFA monthly interest\n• 50,000 CFA loan at 5% = 2,500 CFA monthly interest\n• Interest scales automatically with loan amount\n\nLOAN SETTINGS (Admin)\n• Configure monthly interest rate percentage\n• Set minimum and maximum percentage bounds (e.g., 1%-20%)\n• Enable/disable custom rates for individual loans\n• Changes apply to new loans only\n• Existing loans keep their original rates\n\nLOAN APPLICATION PROCESS\n1. Member applies for loan with desired amount\n2. System calculates monthly interest based on percentage\n3. Review loan application and terms\n4. Approve or reject loan\n5. Track loan payments and accumulated interest\n6. Monitor outstanding balances\n\nLOAN FEATURES\n• Percentage-based interest calculation\n• Interest scales with loan amount\n• Flexible repayment terms\n• Dynamic interest rate configuration\n• Real-time interest calculation\n• Payment history tracking\n• Outstanding balance monitoring\n• Loan status management\n\nLOAN STATUSES\n• Pending - Awaiting approval\n• Approved - Loan approved and active\n• Completed - Fully repaid\n• Rejected - Application denied\n\nBENEFITS OF PERCENTAGE SYSTEM\n• Fair interest proportional to loan amount\n• Transparent calculation method\n• Easy to understand and configure\n• Scales automatically for any loan size",
 
   "manualTransactionManagementContent": "View and manage all financial transactions in the system.\n\nTRANSACTION TYPES\n• Contributions - Member fund contributions\n• Loan Disbursements - Loan payments to members\n• Loan Repayments - Payments from borrowers\n• Penalties - Fines and penalty payments\n• Transfers - Fund transfers between accounts\n\nTRANSACTION DETAILS\nEach transaction includes:\n• Date and time\n• Member involved\n• Amount (credit or debit)\n• Fund affected\n• Description/notes\n• Reference number\n\nTRANSACTION MANAGEMENT\n• View transaction history\n• Filter by date, member, or type\n• Search transactions\n• Export transaction data\n• Generate financial reports\n\nACCESS POINTS\n• Dashboard - Recent transactions\n• Top navigation - Full transaction list\n• Member profiles - Member-specific transactions\n• Fund details - Fund-specific transactions",
 
   "manualPenaltiesManagementContent": "Manage member penalties and fines effectively.\n\nPENALTY TYPES\n• Late Fees - For overdue payments\n• Missed Contributions - For skipped contributions\n• Loan Defaults - For loan payment delays\n• Meeting Absence - For missing meetings\n• Rule Violations - For breaking association rules\n• Custom Penalties - For other infractions\n\nPENALTY STRUCTURE\n• Fixed Amount - Set penalty amount\n• Percentage - Based on contribution/loan amount\n• Daily Rate - Accumulates daily\n• Tiered Penalty - Increases with severity\n\nPENALTY STATUS\n• Pending - Recently applied, awaiting action\n• Active - Currently in effect\n• Paid - Penalty has been paid\n• Waived - Penalty forgiven\n• Cancelled - Penalty removed\n\nPENALTY MANAGEMENT\n• Apply penalties to members\n• Track penalty payments\n• Generate penalty reports\n• Manage penalty rules and rates",
 
-  "manualSettingsConfigurationContent": "Configure the app to match your association's needs.\n\nCONTRIBUTION SETTINGS\n• Default Date Options - Set automatic date preferences\n• Default Host - Choose default contribution host\n• Contribution Frequency - Set regular contribution schedules\n\nFUND SETTINGS\n• Default Currency - Set primary currency (XAF)\n• Interest Rates - Configure default loan interest rates\n• Fund Categories - Customize fund types\n\nSYSTEM SETTINGS\n• Language - Switch between French and English\n• Data Backup - Create and restore data backups\n• Export Options - Configure data export formats\n\nUSER PREFERENCES\n• Dashboard Layout - Customize dashboard appearance\n• Notification Settings - Manage app notifications\n• Security Settings - Set app security preferences\n\nDATA MANAGEMENT\n• Refresh Data - Update all information\n• Export Data - Download data in various formats\n• Backup & Restore - Protect your association data",
+  "manualSettingsConfigurationContent": "Configure the app to match your association's needs.\n\nACCESSING SETTINGS\nAll settings are available through the More screen (bottom navigation):\n• Tap 'More' → Navigate to different settings sections\n• Settings are organized by category for easy access\n• Changes are saved automatically when modified\n\nCONTRIBUTION SETTINGS\n• Default Date Options - Set automatic date preferences\n• Default Host - Choose default contribution host\n• Always Use Today's Date - Automatically set contribution date to today\n• Preview Settings - See how your settings will affect contributions\n\nFUND SETTINGS (New)\n• Default Savings Amount - Set default amount for savings contributions\n• Default Investment Amount - Set default amount for investment contributions\n• Default Emergency Amount - Set default amount for emergency contributions\n• Default Loan Amount - Set default amount for loan contributions\n• Set to 0 to disable defaults and require manual entry\n• Real-time preview shows how settings affect contribution forms\n\nLOAN SETTINGS (Admin)\n• Monthly Interest Rate Percentage - Set percentage rate (e.g., 5%)\n• Minimum/Maximum Rate Bounds - Define percentage limits (e.g., 1%-20%)\n• Custom Rates - Allow different rates for individual loans\n• Interest scales automatically with loan amount\n• Changes apply to new loans only\n\nSYSTEM SETTINGS\n• Language - Switch between French and English\n• Refresh Data - Update all information from dashboard\n• Data Backup - Create and restore data backups\n• Export Options - Configure data export formats\n• About - View app information and version\n\nUSER PREFERENCES\n• User Manual - Complete guide to using the app\n• Notification Settings - Manage app notifications (coming soon)\n• Security Settings - Set app security preferences (coming soon)\n• App Settings - Configure application preferences (coming soon)\n\nDATA MANAGEMENT\n• Refresh Data - Available both in More screen and dashboard\n• Export Data - Download data in CSV or PDF formats\n• Backup & Restore - Protect your association data\n\nREMOVED FEATURES\n• Quick Actions section has been removed from More screen\n• Quick actions (Add Member, Make Contribution, etc.) are now accessible through:\n  - Dashboard quick actions section\n  - Direct navigation from bottom tabs\n  - Individual screens as needed\n\nCURRENCY UPDATE\n• App now displays amounts in 'F' instead of 'XAF'\n• All financial displays updated throughout the application\n• Existing data remains unchanged, only display format updated",
 
   "manualTipsAndBestPracticesContent": "Best practices for effective association management.\n\nDAILY OPERATIONS\n• Record contributions promptly\n• Update member information regularly\n• Review loan applications quickly\n• Monitor fund balances daily\n\nMONTHLY TASKS\n• Generate financial reports\n• Review member statuses\n• Process loan interest calculations\n• Backup association data\n\nBEST PRACTICES\n• Keep accurate records of all transactions\n• Communicate clearly with members about policies\n• Set clear contribution and loan guidelines\n• Regular data backups to prevent loss\n• Train multiple people on app usage\n\nTROUBLESHOoting\n• If app is slow, try refreshing data\n• For missing transactions, check filters\n• Contact support for technical issues\n• Keep app updated for best performance\n\nSECURITY TIPS\n• Regularly backup your data\n• Keep member information confidential\n• Use strong passwords if implemented\n• Monitor for unusual transactions\n\nGROWTH STRATEGIES\n• Track fund performance over time\n• Analyze member contribution patterns\n• Set realistic fund targets\n• Encourage regular member participation",
 
   "loanSettings": "Loan Settings",
   "loanSettingsDescription": "Configure loan interest rates and terms",
+  "monthlyInterestRatePercentage": "Monthly Interest Rate (%)",
+  "monthlyInterestRatePercentageDescription": "Interest calculated as percentage of principal amount each month",
   "defaultMonthlyInterestRate": "Default Monthly Interest Rate",
+  "minimumInterestRatePercentage": "Minimum Interest Rate (%)",
+  "maximumInterestRatePercentage": "Maximum Interest Rate (%)",
   "minimumInterestRate": "Minimum Interest Rate",
   "maximumInterestRate": "Maximum Interest Rate",
   "allowCustomRates": "Allow Custom Interest Rates",
@@ -420,7 +424,7 @@
   "minimumContributionPeriod": "Minimum Contribution Period (months)",
   "minimumContributionPeriodDescription": "Required months of contributions before loan eligibility",
   "resetToDefaults": "Reset to Defaults",
-  "resetToDefaultsDescription": "Restore original settings (3,150 CFA monthly rate)",
+  "resetToDefaultsDescription": "Restore original settings (5% monthly rate)",
   "resetToDefaultsConfirmation": "Are you sure you want to reset all loan settings to their default values? This action cannot be undone.",
   "loanSettingsSaved": "Loan settings saved successfully",
   "settingsResetToDefaults": "Settings reset to defaults",
@@ -429,5 +433,104 @@
   "loanLimits": "Loan Limits",
   "actions": "Actions",
   "configureLoanParameters": "Configure loan parameters for your association",
-  "changesAffectNewLoansOnly": "Changes only affect new loans. Existing loans keep their original rates."
+  "changesAffectNewLoansOnly": "Changes only affect new loans. Existing loans keep their original rates.",
+  "percentageBasedInterest": "Percentage-Based Interest",
+  "interestScalesWithLoanAmount": "Interest amount automatically scales with loan size",
+  "exampleInterestCalculation": "Example: 5% rate on 100,000 CFA = 5,000 CFA monthly interest",
+  "interestCalculatedAsPercentage": "Interest is calculated as a percentage of the principal amount each month",
+  "monthlyInterestAmount": "Monthly Interest Amount",
+  "totalScheduledInterest": "Total Scheduled Interest",
+  "totalScheduledPayment": "Total Scheduled Payment",
+  "interestAccumulatesMonthlyNote": "Note: Interest accumulates monthly based on principal amount. Actual total may vary depending on payment schedule.",
+  "buyMeACoffee": "Buy me a coffee ☕",
+  "supportAppDevelopment": "Support app development",
+  "thankYouMessage": "Thank you for using our Association Management App! ❤️",
+  "supportMessage": "If this app has been helpful to you and your organization, consider supporting the developer with a small contribution.",
+  "chooseContactMethod": "Choose how you'd like to contact the developer:",
+  "whatsappContact": "WhatsApp",
+  "phoneCallContact": "Phone Call",
+  "smsContact": "SMS",
+  "mobileMoneyDetails": "📱 Mobile Money",
+  "mtnOrangeMoney": "MTN Mobile Money / Orange Money",
+  "suggestedAmounts": "💡 Suggested amounts:",
+  "coffeeAmount": "☕ Coffee",
+  "snackAmount": "🥐 Snack",
+  "mealAmount": "🍕 Meal",
+  "generousAmount": "❤️ Generous",
+  "supportAppMessage": "Your support helps maintain and improve this app for everyone! 🙏",
+  "maybeLater": "Maybe Later",
+  "copyNumber": "Copy Number",
+  "phoneNumberCopied": "Phone number copied to clipboard! 📋",
+  "contactDeveloper": "Contact Developer",
+  "openingWhatsApp": "Opening WhatsApp...",
+  "openingPhone": "Opening phone app...",
+  "openingSMS": "Opening SMS app...",
+  "couldNotLaunch": "Could not launch {method}",
+  "@couldNotLaunch": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "supportDeveloper": "Support the Developer",
+  "licenseRestrictions": "License & Usage Restrictions",
+  "personalUseOnly": "📋 Personal & Non-Commercial Use Only",
+  "personalUseDescription": "This app is licensed for personal and non-commercial use by associations and community groups only.",
+  "commercialProhibited": "🚫 Commercial Use Prohibited",
+  "commercialDescription": "Commercial use, resale, or distribution for profit is strictly prohibited without explicit written permission.",
+  "modificationRestricted": "⚙️ Modification Restrictions",
+  "modificationDescription": "Reverse engineering, decompiling, or creating derivative works is not permitted.",
+  "supportRequired": "💝 Support Required for Continued Use",
+  "supportRequiredDescription": "Regular support contributions help maintain and improve this free app for everyone.",
+  "licenseViolation": "⚠️ License Violation Consequences",
+  "licenseViolationDescription": "Violation of these terms may result in access restrictions or legal action.",
+  "contactForCommercial": "📧 Commercial Licensing Available",
+  "contactForCommercialDescription": "Contact the developer for commercial licensing options and enterprise features.",
+  "agreeToTerms": "By using this app, you agree to these terms and conditions.",
+  "readFullLicense": "Read Full License",
+  "understandRestrictions": "I Understand",
+  "licenseActivation": "License Activation",
+  "enterLicenseCode": "Enter License Code",
+  "licenseCodeHint": "Enter your license code (e.g., ASSO-XXXX-XXXX-XXXX)",
+  "activateLicense": "Activate License",
+  "licenseStatus": "License Status",
+  "trialVersion": "Trial Version",
+  "fullVersion": "Full Version",
+  "developerVersion": "Developer Version",
+  "licenseExpired": "License Expired",
+  "daysRemaining": "{days} days remaining",
+  "@daysRemaining": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "unlimitedAccess": "Unlimited Access",
+  "featureRestricted": "Feature Restricted",
+  "featureRestrictedMessage": "This feature requires a full license. Please activate your license or contact the developer.",
+  "upgradeToFull": "Upgrade to Full Version",
+  "trialExpiredTitle": "Trial Period Expired",
+  "trialExpiredMessage": "Your 30-day trial has expired. Please activate a full license to continue using the app.",
+  "invalidLicenseCode": "Invalid license code format",
+  "licenseActivationFailed": "License activation failed",
+  "licenseActivatedSuccessfully": "License activated successfully!",
+  "currentLicense": "Current License",
+  "activationDate": "Activation Date",
+  "expirationDate": "Expiration Date",
+  "enabledFeatures": "Enabled Features",
+  "deactivateLicense": "Deactivate License",
+  "confirmDeactivation": "Are you sure you want to deactivate your license? This will switch to trial mode.",
+  "licenseDeactivated": "License deactivated. Switched to trial mode.",
+  "contactForLicense": "Contact Developer for License",
+  "trialLimitations": "Trial Limitations",
+  "trialLimitationsMessage": "Trial version has limited functionality. Some features may be restricted or have usage limits.",
+  "getFullLicense": "Get Full License",
+  "licensePricing": "License Pricing",
+  "fullLicensePrice": "Full License: 10,000 CFA (one-time payment)",
+  "licenseIncludes": "• Includes all premium features\n• Unlimited members and transactions\n• Lifetime updates and support",
+  "purchaseInstructions": "Send 10,000 CFA with message: \"LICENSE REQUEST\" and your device info. You'll receive your license code within 24 hours.",
+  "supportAndGetLicense": "Support the developer and get your full license!",
+  "backToMoreScreen": "Back to More Screen"
 }

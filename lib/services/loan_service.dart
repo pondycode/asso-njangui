@@ -508,10 +508,7 @@ class LoanService {
         .fold(0.0, (sum, r) => sum + r.amount);
 
     // Simple interest calculation - month by month accumulation
-    // Interest is added each month based on configurable rate
-
-    // Get current monthly interest rate from settings
-    final monthlyInterestRate = _loanSettings.getCurrentMonthlyInterestRate();
+    // Interest is calculated as percentage of principal each month
 
     // Calculate remaining principal (payments go to principal first)
     final remainingPrincipal = math.max(
@@ -519,9 +516,12 @@ class LoanService {
       loan.principalAmount - totalPayments,
     );
 
-    // Total amount due = remaining principal + (monthly rate * elapsed months)
-    // This means interest accumulates month by month, not based on fixed term
-    final totalInterestDue = monthlyInterestRate * monthsElapsed;
+    // Calculate monthly interest based on remaining principal and elapsed months
+    // Interest accumulates month by month based on percentage of principal
+    final monthlyInterestAmount = _loanSettings.calculateMonthlyInterest(
+      loan.principalAmount,
+    );
+    final totalInterestDue = monthlyInterestAmount * monthsElapsed;
 
     // If principal is fully paid, apply remaining payments to interest
     double interestPaid = 0.0;

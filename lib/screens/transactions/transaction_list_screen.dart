@@ -44,6 +44,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
         children: [
           _buildSearchBar(),
           _buildFilterChips(),
+          _buildTransactionCount(),
           Expanded(child: _buildTransactionList()),
         ],
       ),
@@ -108,6 +109,94 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
     );
   }
 
+  Widget _buildTransactionCount() {
+    return Consumer<AppStateProvider>(
+      builder: (context, appState, child) {
+        final transactions = _getFilteredTransactions(appState.transactions);
+        final totalTransactions = appState.transactions.length;
+
+        return Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: Theme.of(
+              context,
+            ).colorScheme.primaryContainer.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.2),
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.receipt_long,
+                color: Theme.of(context).colorScheme.primary,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  _getTransactionCountText(
+                    transactions.length,
+                    totalTransactions,
+                  ),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              if (_hasActiveFilters()) ...[
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'Filtered',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  String _getTransactionCountText(int filteredCount, int totalCount) {
+    if (filteredCount == totalCount) {
+      return '$totalCount transaction${totalCount == 1 ? '' : 's'}';
+    } else {
+      return '$filteredCount of $totalCount transaction${totalCount == 1 ? '' : 's'}';
+    }
+  }
+
+  bool _hasActiveFilters() {
+    return _searchQuery.isNotEmpty ||
+        _selectedType != null ||
+        _startDate != null ||
+        _endDate != null ||
+        widget.memberId != null ||
+        widget.fundId != null;
+  }
+
   Widget _buildTransactionList() {
     return Consumer<AppStateProvider>(
       builder: (context, appState, child) {
@@ -157,7 +246,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.1),
+          backgroundColor: color.withValues(alpha: 0.1),
           child: Icon(_getTransactionIcon(transaction.type), color: color),
         ),
         title: Text(

@@ -1,8 +1,8 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/loan.dart';
 import '../../models/fund.dart';
 import '../../models/member.dart';
@@ -10,6 +10,7 @@ import '../../providers/app_state_provider.dart';
 import '../../providers/loan_settings_provider.dart';
 import '../../services/database_service.dart';
 import '../../services/loan_service.dart';
+import '../../widgets/feature_restriction_widget.dart';
 
 class LoanApplicationScreen extends StatefulWidget {
   const LoanApplicationScreen({super.key});
@@ -78,6 +79,10 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const TrialLimitationBanner(
+                    customMessage:
+                        'Trial users can apply for loans up to 50,000 CFA. Upgrade for unlimited loan amounts.',
+                  ),
                   _buildMemberSelectionSection(appState),
                   const SizedBox(height: 24),
                   _buildFundSelectionSection(appState),
@@ -327,8 +332,8 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen> {
             const SizedBox(height: 16),
             Consumer<LoanSettingsProvider>(
               builder: (context, loanSettings, child) {
-                final monthlyRate = loanSettings
-                    .getCurrentMonthlyInterestRate();
+                final monthlyRatePercentage = loanSettings
+                    .getCurrentMonthlyInterestRatePercentage();
                 return TextFormField(
                   controller: _interestRateController,
                   decoration: InputDecoration(
@@ -336,7 +341,7 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen> {
                     suffixText: '% per year',
                     border: const OutlineInputBorder(),
                     helperText:
-                        'Fixed monthly interest: CFA ${monthlyRate.toStringAsFixed(0)}',
+                        'Monthly interest rate: ${monthlyRatePercentage.toStringAsFixed(1)}% of principal',
                   ),
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
@@ -467,59 +472,86 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen> {
 
     final amount = double.tryParse(_amountController.text) ?? 0;
     final term = int.tryParse(_termController.text) ?? 0;
-    final interestRate = _selectedFund!.interestRate;
 
     if (amount <= 0 || term <= 0) {
       return const SizedBox.shrink();
     }
 
-    // Interest rate is already monthly (e.g., 10% per month)
-    final monthlyRate = interestRate / 100;
-    final monthlyPayment =
-        amount *
-        (monthlyRate * math.pow(1 + monthlyRate, term)) /
-        (math.pow(1 + monthlyRate, term) - 1);
-    final totalPayment = monthlyPayment * term;
-    final totalInterest = totalPayment - amount;
+    return Consumer<LoanSettingsProvider>(
+      builder: (context, loanSettings, child) {
+        // Calculate using dynamic interest rate
+        final monthlyInterestRate = loanSettings
+            .getCurrentMonthlyInterestRatePercentage();
+        final monthlyInterestAmount = loanSettings.calculateMonthlyInterest(
+          amount,
+        );
+        final monthlyPrincipal = amount / term;
+        final monthlyPayment = monthlyPrincipal + monthlyInterestAmount;
 
-    return Card(
-      color: Colors.blue[50],
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Loan Summary',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        // Note: In the new system, interest accumulates month by month
+        // This calculation shows what would happen if paid according to schedule
+        final totalScheduledPayment = monthlyPayment * term;
+        final totalScheduledInterest = monthlyInterestAmount * term;
+
+        return Card(
+          color: Colors.blue[50],
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Loan Summary',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade50,
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(color: Colors.orange.shade200),
+                  ),
+                  child: Text(
+                    AppLocalizations.of(
+                      context,
+                    )!.interestAccumulatesMonthlyNote,
+                    style: const TextStyle(fontSize: 12, color: Colors.orange),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _buildSummaryRow(
+                  'Principal Amount',
+                  '\$${amount.toStringAsFixed(2)}',
+                ),
+                _buildSummaryRow(
+                  'Monthly Interest Rate',
+                  '${monthlyInterestRate.toStringAsFixed(1)}% of principal',
+                ),
+                _buildSummaryRow(
+                  'Monthly Interest Amount',
+                  '\$${monthlyInterestAmount.toStringAsFixed(2)}',
+                ),
+                _buildSummaryRow('Term', '$term months'),
+                _buildSummaryRow(
+                  'Monthly Payment',
+                  '\$${monthlyPayment.toStringAsFixed(2)}',
+                ),
+                _buildSummaryRow(
+                  'Total Scheduled Interest',
+                  '\$${totalScheduledInterest.toStringAsFixed(2)}',
+                ),
+                const Divider(),
+                _buildSummaryRow(
+                  'Total Scheduled Payment',
+                  '\$${totalScheduledPayment.toStringAsFixed(2)}',
+                  isTotal: true,
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            _buildSummaryRow(
-              'Principal Amount',
-              '\$${amount.toStringAsFixed(2)}',
-            ),
-            _buildSummaryRow(
-              'Interest Rate',
-              '${interestRate.toStringAsFixed(2)}%',
-            ),
-            _buildSummaryRow('Term', '$term months'),
-            _buildSummaryRow(
-              'Monthly Payment',
-              '\$${monthlyPayment.toStringAsFixed(2)}',
-            ),
-            _buildSummaryRow(
-              'Total Interest',
-              '\$${totalInterest.toStringAsFixed(2)}',
-            ),
-            const Divider(),
-            _buildSummaryRow(
-              'Total Payment',
-              '\$${totalPayment.toStringAsFixed(2)}',
-              isTotal: true,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -645,7 +677,7 @@ class _LoanApplicationScreenState extends State<LoanApplicationScreen> {
 
       // Month-by-month interest accumulation using configurable rate
       final loanSettings = context.read<LoanSettingsProvider>();
-      final monthlyInterest = loanSettings.getCurrentMonthlyInterestRate();
+      final monthlyInterest = loanSettings.calculateMonthlyInterest(amount);
       final monthlyPrincipal = amount / term;
       final monthlyPayment = monthlyPrincipal + monthlyInterest;
 

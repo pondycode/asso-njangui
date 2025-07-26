@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/loan.dart';
-import '../../models/member.dart';
 import '../../providers/app_state_provider.dart';
 
 class EditLoanScreen extends StatefulWidget {
@@ -289,7 +288,7 @@ class _EditLoanScreenState extends State<EditLoanScreen> {
                         )
                       : null,
                 );
-              }).toList(),
+              }),
           ],
         ),
       ),

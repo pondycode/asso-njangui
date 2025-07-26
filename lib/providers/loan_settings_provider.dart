@@ -5,7 +5,7 @@ import '../models/loan_settings.dart';
 class LoanSettingsProvider extends ChangeNotifier {
   static const String _boxName = 'loan_settings';
   static const String _settingsKey = 'current_settings';
-  
+
   LoanSettings _settings = LoanSettings.defaultSettings();
   bool _isLoading = false;
   String? _error;
@@ -15,7 +15,8 @@ class LoanSettingsProvider extends ChangeNotifier {
   String? get error => _error;
 
   // Singleton pattern
-  static final LoanSettingsProvider _instance = LoanSettingsProvider._internal();
+  static final LoanSettingsProvider _instance =
+      LoanSettingsProvider._internal();
   factory LoanSettingsProvider() => _instance;
   LoanSettingsProvider._internal();
 
@@ -35,9 +36,24 @@ class LoanSettingsProvider extends ChangeNotifier {
   /// Load settings from Hive storage
   Future<void> _loadSettings() async {
     try {
-      final box = await Hive.openBox<LoanSettings>(_boxName);
+      // Add retry logic for box opening
+      Box<LoanSettings>? box;
+      for (int i = 0; i < 3; i++) {
+        try {
+          box = await Hive.openBox<LoanSettings>(_boxName);
+          break;
+        } catch (e) {
+          if (i == 2) rethrow; // Last attempt, rethrow the error
+          await Future.delayed(Duration(milliseconds: 100 * (i + 1)));
+        }
+      }
+
+      if (box == null) {
+        throw Exception('Failed to open loan settings box after retries');
+      }
+
       final savedSettings = box.get(_settingsKey);
-      
+
       if (savedSettings != null) {
         _settings = savedSettings;
       } else {
@@ -45,25 +61,43 @@ class LoanSettingsProvider extends ChangeNotifier {
         await _saveSettings(_settings);
       }
     } catch (e) {
-      throw Exception('Failed to load loan settings: $e');
+      debugPrint('Failed to load loan settings, using defaults: $e');
+      // Don't throw, just use default settings
+      _settings = LoanSettings.defaultSettings();
     }
   }
 
   /// Save settings to Hive storage
   Future<void> _saveSettings(LoanSettings settings) async {
     try {
-      final box = await Hive.openBox<LoanSettings>(_boxName);
+      // Add retry logic for box opening
+      Box<LoanSettings>? box;
+      for (int i = 0; i < 3; i++) {
+        try {
+          box = await Hive.openBox<LoanSettings>(_boxName);
+          break;
+        } catch (e) {
+          if (i == 2) rethrow; // Last attempt, rethrow the error
+          await Future.delayed(Duration(milliseconds: 100 * (i + 1)));
+        }
+      }
+
+      if (box == null) {
+        throw Exception('Failed to open loan settings box after retries');
+      }
+
       await box.put(_settingsKey, settings);
     } catch (e) {
+      debugPrint('Failed to save loan settings: $e');
       throw Exception('Failed to save loan settings: $e');
     }
   }
 
   /// Update loan settings
   Future<bool> updateSettings({
-    double? defaultMonthlyInterestRate,
-    double? minimumInterestRate,
-    double? maximumInterestRate,
+    double? monthlyInterestRatePercentage,
+    double? minimumInterestRatePercentage,
+    double? maximumInterestRatePercentage,
     bool? allowCustomRates,
     int? minimumLoanTermMonths,
     int? maximumLoanTermMonths,
@@ -75,9 +109,9 @@ class LoanSettingsProvider extends ChangeNotifier {
     try {
       // Validate settings
       final newSettings = _settings.copyWith(
-        defaultMonthlyInterestRate: defaultMonthlyInterestRate,
-        minimumInterestRate: minimumInterestRate,
-        maximumInterestRate: maximumInterestRate,
+        monthlyInterestRatePercentage: monthlyInterestRatePercentage,
+        minimumInterestRatePercentage: minimumInterestRatePercentage,
+        maximumInterestRatePercentage: maximumInterestRatePercentage,
         allowCustomRates: allowCustomRates,
         minimumLoanTermMonths: minimumLoanTermMonths,
         maximumLoanTermMonths: maximumLoanTermMonths,
@@ -110,21 +144,24 @@ class LoanSettingsProvider extends ChangeNotifier {
 
   /// Validate loan settings
   String? _validateSettings(LoanSettings settings) {
-    if (settings.defaultMonthlyInterestRate < 0) {
-      return 'Default interest rate cannot be negative';
+    if (settings.monthlyInterestRatePercentage < 0) {
+      return 'Monthly interest rate percentage cannot be negative';
     }
 
-    if (settings.minimumInterestRate < 0) {
-      return 'Minimum interest rate cannot be negative';
+    if (settings.minimumInterestRatePercentage < 0) {
+      return 'Minimum interest rate percentage cannot be negative';
     }
 
-    if (settings.maximumInterestRate < settings.minimumInterestRate) {
-      return 'Maximum interest rate cannot be less than minimum';
+    if (settings.maximumInterestRatePercentage <
+        settings.minimumInterestRatePercentage) {
+      return 'Maximum interest rate percentage cannot be less than minimum';
     }
 
-    if (settings.defaultMonthlyInterestRate < settings.minimumInterestRate ||
-        settings.defaultMonthlyInterestRate > settings.maximumInterestRate) {
-      return 'Default interest rate must be between minimum and maximum rates';
+    if (settings.monthlyInterestRatePercentage <
+            settings.minimumInterestRatePercentage ||
+        settings.monthlyInterestRatePercentage >
+            settings.maximumInterestRatePercentage) {
+      return 'Monthly interest rate percentage must be between minimum and maximum rates';
     }
 
     if (settings.minimumLoanTermMonths < 1) {
@@ -149,9 +186,9 @@ class LoanSettingsProvider extends ChangeNotifier {
   /// Reset settings to default
   Future<bool> resetToDefaults({String? updatedBy}) async {
     return await updateSettings(
-      defaultMonthlyInterestRate: 3150.0,
-      minimumInterestRate: 1000.0,
-      maximumInterestRate: 10000.0,
+      monthlyInterestRatePercentage: 5.0,
+      minimumInterestRatePercentage: 1.0,
+      maximumInterestRatePercentage: 20.0,
       allowCustomRates: true,
       minimumLoanTermMonths: 1,
       maximumLoanTermMonths: 60,
@@ -161,16 +198,21 @@ class LoanSettingsProvider extends ChangeNotifier {
     );
   }
 
-  /// Get current monthly interest rate (main method used by loan service)
-  double getCurrentMonthlyInterestRate() {
-    return _settings.defaultMonthlyInterestRate;
+  /// Get current monthly interest rate percentage (main method used by loan service)
+  double getCurrentMonthlyInterestRatePercentage() {
+    return _settings.monthlyInterestRatePercentage;
   }
 
-  /// Check if a custom interest rate is allowed and valid
-  bool isCustomRateValid(double rate) {
+  /// Calculate monthly interest for a given principal amount
+  double calculateMonthlyInterest(double principalAmount) {
+    return _settings.calculateMonthlyInterest(principalAmount);
+  }
+
+  /// Check if a custom interest rate percentage is allowed and valid
+  bool isCustomRatePercentageValid(double ratePercentage) {
     if (!_settings.allowCustomRates) return false;
-    return rate >= _settings.minimumInterestRate && 
-           rate <= _settings.maximumInterestRate;
+    return ratePercentage >= _settings.minimumInterestRatePercentage &&
+        ratePercentage <= _settings.maximumInterestRatePercentage;
   }
 
   void _setLoading(bool loading) {

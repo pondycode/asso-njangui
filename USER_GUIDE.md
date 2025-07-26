@@ -147,8 +147,9 @@ Set default values to speed up contribution entry:
 
 ### Loan System Overview
 The app uses a **month-by-month interest accumulation** system:
-- **Configurable Monthly Interest**: Admin-controlled rate (default: 3,150 CFA per month)
-- **Simple Interest**: No compounding
+- **Percentage-Based Monthly Interest**: Admin-controlled rate (default: 5% of principal per month)
+- **Scalable Interest**: Interest amount automatically adjusts based on loan size
+- **Simple Interest**: No compounding, calculated monthly on original principal
 - **Accumulation**: Interest adds up each month regardless of payments
 - **Payment Priority**: Payments go to principal first, then interest
 - **Dynamic Rates**: Interest rates can be adjusted by administrators
@@ -165,17 +166,22 @@ The app uses a **month-by-month interest accumulation** system:
    - **Collateral** - Optional security
 
 ### Loan Calculations
-**Example**: 31,500 CFA loan issued August 31, 2024 (at default 3,150 CFA/month rate)
-- **After 10.8 months** (July 21, 2025):
-  - Principal remaining: 23,500 CFA (after 8,000 payment)
-  - Interest due: 3,150 × 10.8 = 34,020 CFA
-  - **Total due**: 57,520 CFA
+**Example**: 100,000 CFA loan at default 5% monthly rate
+- **Monthly Interest**: 100,000 × 5% = 5,000 CFA per month
+- **After 6 months**: 5,000 × 6 = 30,000 CFA total interest
+- **If 40,000 paid**: Principal remaining = 60,000 CFA, Interest due = 30,000 CFA
+- **Total due**: 90,000 CFA
 
-**With Different Rate**: Same loan at 2,500 CFA/month rate
-- **After 10.8 months**:
-  - Principal remaining: 23,500 CFA (same payment)
-  - Interest due: 2,500 × 10.8 = 27,000 CFA
-  - **Total due**: 50,500 CFA (7,020 CFA less)
+**Different Loan Size**: 50,000 CFA loan at same 5% monthly rate
+- **Monthly Interest**: 50,000 × 5% = 2,500 CFA per month
+- **After 6 months**: 2,500 × 6 = 15,000 CFA total interest
+- **If 20,000 paid**: Principal remaining = 30,000 CFA, Interest due = 15,000 CFA
+- **Total due**: 45,000 CFA
+
+**Rate Comparison**: 100,000 CFA loan at 3% vs 5% monthly rate
+- **At 3%**: 3,000 CFA monthly interest
+- **At 5%**: 5,000 CFA monthly interest
+- **Difference**: 2,000 CFA more per month at higher rate
 
 ### Loan Management Features
 - **Balance Tracking** - Real-time balance calculations
@@ -195,15 +201,15 @@ The app uses a **month-by-month interest accumulation** system:
 
 #### Setting Monthly Interest Rates
 1. **Access Settings** - Navigate to Loan Settings
-2. **Set Default Rate** - Enter desired monthly interest amount
-3. **Configure Bounds** - Set minimum and maximum allowed rates
+2. **Set Default Rate** - Enter desired monthly interest percentage (e.g., 5%)
+3. **Configure Bounds** - Set minimum and maximum allowed percentages
 4. **Enable Custom Rates** - Allow different rates for individual loans
 5. **Save Changes** - Apply settings to new loans
 
 #### Example Rate Changes
-- **Lower Rate**: Change from 3,150 to 2,500 CFA/month for reduced burden
-- **Higher Rate**: Increase to 4,000 CFA/month for better returns
-- **Tiered Rates**: Use custom rates based on loan amount or member status
+- **Lower Rate**: Change from 5% to 3% monthly for reduced burden
+- **Higher Rate**: Increase to 7% monthly for better returns
+- **Tiered Rates**: Use custom percentage rates based on member status or loan purpose
 
 #### Important Notes
 - ⚠️ **Existing Loans**: Rate changes don't affect existing loans
@@ -295,9 +301,9 @@ Create automatic penalty rules:
 Configure loan parameters for your association:
 
 #### Interest Rate Settings
-- **Default Monthly Interest Rate** - Set the standard monthly interest amount
-- **Minimum Interest Rate** - Lower bound for custom rates
-- **Maximum Interest Rate** - Upper bound for custom rates
+- **Monthly Interest Rate Percentage** - Set the standard monthly interest as percentage of principal (e.g., 5%)
+- **Minimum Interest Rate Percentage** - Lower bound for custom rates (e.g., 1%)
+- **Maximum Interest Rate Percentage** - Upper bound for custom rates (e.g., 20%)
 - **Allow Custom Rates** - Enable/disable custom rates for individual loans
 
 #### Loan Term Settings
@@ -309,10 +315,11 @@ Configure loan parameters for your association:
 - **Minimum Contribution Period** - Required months of contributions before loan eligibility
 
 #### Actions
-- **Reset to Defaults** - Restore original settings (3,150 CFA monthly rate)
+- **Reset to Defaults** - Restore original settings (5% monthly rate)
 - **Save Settings** - Apply changes to new loans
 
 > **Note**: Changes only affect new loans. Existing loans keep their original rates.
+> **Important**: Interest is calculated as percentage of principal, so larger loans automatically have higher interest amounts.
 
 ### App Settings
 **More** → **Settings** → **App Settings**
@@ -431,11 +438,16 @@ The app is designed to be intuitive while providing powerful features for managi
 ## 🔢 Calculation Examples
 
 ### Loan Interest Calculation
-**Scenario**: 50,000 CFA loan for 6 months
-- **Monthly Interest**: 3,150 CFA
-- **After 3 months**: 3,150 × 3 = 9,450 CFA interest
-- **If 20,000 paid**: Principal = 30,000, Interest = 9,450
-- **Total Due**: 39,450 CFA
+**Scenario**: 50,000 CFA loan at 5% monthly rate for 6 months
+- **Monthly Interest**: 50,000 × 5% = 2,500 CFA
+- **After 3 months**: 2,500 × 3 = 7,500 CFA interest
+- **If 20,000 paid**: Principal = 30,000, Interest = 7,500
+- **Total Due**: 37,500 CFA
+
+**Different Loan Size**: 100,000 CFA loan at same 5% rate
+- **Monthly Interest**: 100,000 × 5% = 5,000 CFA
+- **After 3 months**: 5,000 × 3 = 15,000 CFA interest
+- **Shows how interest scales with loan amount**
 
 ### Contribution Tracking
 **Example**: Member contributes monthly

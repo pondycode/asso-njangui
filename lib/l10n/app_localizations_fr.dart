@@ -839,16 +839,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get suggestedAmounts => '💡 Montants suggérés :';
 
   @override
-  String get coffeeAmount => '500 CFA ☕ Café';
+  String get coffeeAmount => '☕ Café';
 
   @override
-  String get snackAmount => '1 000 CFA 🥐 Collation';
+  String get snackAmount => '🥐 Collation';
 
   @override
-  String get mealAmount => '2 500 CFA 🍕 Repas';
+  String get mealAmount => '🍕 Repas';
 
   @override
-  String get generousAmount => '5 000 CFA ❤️ Généreux';
+  String get generousAmount => '❤️ Généreux';
 
   @override
   String get supportHelpMessage => 'Votre soutien aide à maintenir et améliorer cette application pour tous ! 🙏';
@@ -920,7 +920,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get interestAccumulatesMonthly => 'L\'intérêt s\'accumule mensuellement indépendamment de la durée';
 
   @override
-  String get fixedMonthlyInterest => 'Intérêt mensuel fixe : 3 150 CFA';
+  String get fixedMonthlyInterest => 'Taux d\'intérêt mensuel en pourcentage (configurable)';
 
   @override
   String get interestDue => 'Intérêt Dû';
@@ -929,7 +929,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get monthByMonthAccumulation => 'Accumulation mois par mois';
 
   @override
-  String get interestStructure => '3 150 CFA ajoutés chaque mois depuis le début du prêt';
+  String get interestStructure => 'Pourcentage du principal ajouté chaque mois depuis le début du prêt';
 
   @override
   String get monthsElapsed => 'Mois Écoulés';
@@ -938,11 +938,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get monthByMonthInterestModel => 'Modèle d\'Intérêt Mois par Mois :';
 
   @override
-  String get monthlyInterestFixed => 'Intérêt Mensuel = 3 150 CFA Fixe';
+  String get monthlyInterestFixed => 'Intérêt Mensuel = Principal × Pourcentage Configurable';
 
   @override
   String totalInterestDue(Object amount, Object months) {
-    return 'Total Intérêt Dû = 3 150 CFA × $months mois = $amount';
+    return 'Total Intérêt Dû = (Principal × Taux%) × $months mois = $amount';
   }
 
   @override
@@ -1053,7 +1053,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get manualContributionManagementContent => 'Enregistrez et suivez les contributions des membres aux différents fonds.\n\nFAIRE DES CONTRIBUTIONS\n1. Appuyez sur \'Contribuer\' depuis le Tableau de Bord\n2. Sélectionnez le membre qui fait la contribution\n3. Choisissez le fonds auquel contribuer\n4. Entrez le montant de la contribution\n5. Définissez la date de contribution (par défaut aujourd\'hui)\n6. Ajoutez des notes si nécessaire\n7. Soumettez la contribution\n\nFONCTIONNALITÉS DES CONTRIBUTIONS\n• Détection de doublons - Avertit si le membre a déjà contribué à la date sélectionnée\n• Support multi-fonds - Contribuer à différents types de fonds\n• Historique des contributions - Suivre toutes les contributions passées\n• Paramètres par défaut - Définir les préférences d\'hôte et de date par défaut\n\nCONTRIBUTIONS EN MASSE\n• Traiter plusieurs contributions à la fois\n• Importer des données de contribution\n• Traitement par lots pour l\'efficacité\n\nRAPPORTS\n• Voir les résumés de contributions\n• Exporter les données de contribution\n• Générer des rapports de contribution';
 
   @override
-  String get manualLoanManagementContent => 'Gérez les demandes de prêt, les approbations et les remboursements.\n\nSYSTÈME DE PRÊT\nL\'application utilise un modèle d\'intérêt mois par mois :\n• Les intérêts s\'accumulent chaque mois indépendamment des paiements\n• Taux d\'intérêt mensuel fixe\n• Pas de termes fixes de 12 mois\n• Montant total dû = Principal + (Intérêt Mensuel × Mois Écoulés)\n\nPROCESSUS DE PRÊT\n1. Le membre demande un prêt\n2. Examiner la demande de prêt\n3. Approuver ou rejeter le prêt\n4. Suivre les paiements de prêt et les intérêts\n5. Surveiller les soldes impayés\n\nFONCTIONNALITÉS DES PRÊTS\n• Conditions de remboursement flexibles\n• Suivi du calcul des intérêts\n• Historique des paiements\n• Surveillance du solde impayé\n• Gestion du statut des prêts\n\nSTATUTS DES PRÊTS\n• En Attente - En attente d\'approbation\n• Approuvé - Prêt approuvé et actif\n• Terminé - Entièrement remboursé\n• Rejeté - Demande refusée';
+  String get manualLoanManagementContent => 'Gérez les demandes de prêt, les approbations et les remboursements avec intérêt basé sur pourcentage.\n\nSYSTÈME DE PRÊT BASÉ SUR POURCENTAGE\nL\'application utilise un modèle d\'intérêt dynamique mois par mois :\n• Intérêt calculé comme pourcentage du montant principal\n• Les intérêts s\'accumulent chaque mois indépendamment des paiements\n• Pourcentage d\'intérêt mensuel configurable (défaut : 5%)\n• Pas de termes fixes de 12 mois\n• Montant total dû = Principal + (Principal × Taux% × Mois Écoulés)\n\nEXEMPLES D\'INTÉRÊT\n• Prêt de 100 000 CFA à 5% = 5 000 CFA d\'intérêt mensuel\n• Prêt de 50 000 CFA à 5% = 2 500 CFA d\'intérêt mensuel\n• L\'intérêt s\'ajuste automatiquement selon le montant du prêt\n\nPARAMÈTRES DE PRÊT (Admin)\n• Configurer le pourcentage de taux d\'intérêt mensuel\n• Définir les limites de pourcentage minimum et maximum (ex: 1%-20%)\n• Activer/désactiver les taux personnalisés pour les prêts individuels\n• Les modifications s\'appliquent uniquement aux nouveaux prêts\n• Les prêts existants conservent leurs taux originaux\n\nPROCESSUS DE DEMANDE DE PRÊT\n1. Le membre demande un prêt avec le montant désiré\n2. Le système calcule l\'intérêt mensuel basé sur le pourcentage\n3. Examiner la demande de prêt et les conditions\n4. Approuver ou rejeter le prêt\n5. Suivre les paiements de prêt et les intérêts accumulés\n6. Surveiller les soldes impayés\n\nFONCTIONNALITÉS DES PRÊTS\n• Calcul d\'intérêt basé sur pourcentage\n• L\'intérêt s\'ajuste selon le montant du prêt\n• Conditions de remboursement flexibles\n• Configuration dynamique du taux d\'intérêt\n• Calcul d\'intérêt en temps réel\n• Suivi de l\'historique des paiements\n• Surveillance du solde impayé\n• Gestion du statut des prêts\n\nSTATUTS DES PRÊTS\n• En Attente - En attente d\'approbation\n• Approuvé - Prêt approuvé et actif\n• Terminé - Entièrement remboursé\n• Rejeté - Demande refusée\n\nAVANTAGES DU SYSTÈME DE POURCENTAGE\n• Intérêt équitable proportionnel au montant du prêt\n• Méthode de calcul transparente\n• Facile à comprendre et configurer\n• S\'ajuste automatiquement pour toute taille de prêt';
 
   @override
   String get manualTransactionManagementContent => 'Visualisez et gérez toutes les transactions financières du système.\n\nTYPES DE TRANSACTIONS\n• Contributions - Contributions des membres aux fonds\n• Décaissements de Prêts - Paiements de prêts aux membres\n• Remboursements de Prêts - Paiements des emprunteurs\n• Pénalités - Paiements d\'amendes et de pénalités\n• Transferts - Transferts de fonds entre comptes\n\nDÉTAILS DES TRANSACTIONS\nChaque transaction inclut :\n• Date et heure\n• Membre impliqué\n• Montant (crédit ou débit)\n• Fonds affecté\n• Description/notes\n• Numéro de référence\n\nGESTION DES TRANSACTIONS\n• Voir l\'historique des transactions\n• Filtrer par date, membre ou type\n• Rechercher des transactions\n• Exporter les données de transaction\n• Générer des rapports financiers\n\nPOINTS D\'ACCÈS\n• Tableau de Bord - Transactions récentes\n• Navigation supérieure - Liste complète des transactions\n• Profils des membres - Transactions spécifiques au membre\n• Détails des fonds - Transactions spécifiques au fonds';
@@ -1062,8 +1062,312 @@ class AppLocalizationsFr extends AppLocalizations {
   String get manualPenaltiesManagementContent => 'Gérez efficacement les pénalités et amendes des membres.\n\nTYPES DE PÉNALITÉS\n• Frais de Retard - Pour les paiements en retard\n• Contributions Manquées - Pour les contributions sautées\n• Défauts de Prêt - Pour les retards de paiement de prêt\n• Absence aux Réunions - Pour les réunions manquées\n• Violations de Règles - Pour la violation des règles de l\'association\n• Pénalités Personnalisées - Pour d\'autres infractions\n\nSTRUCTURE DES PÉNALITÉS\n• Montant Fixe - Montant de pénalité défini\n• Pourcentage - Basé sur le montant de contribution/prêt\n• Taux Journalier - S\'accumule quotidiennement\n• Pénalité Échelonnée - Augmente avec la gravité\n\nSTATUT DES PÉNALITÉS\n• En Attente - Récemment appliquée, en attente d\'action\n• Active - Actuellement en vigueur\n• Payée - La pénalité a été payée\n• Annulée - Pénalité pardonnée\n• Supprimée - Pénalité retirée\n\nGESTION DES PÉNALITÉS\n• Appliquer des pénalités aux membres\n• Suivre les paiements de pénalités\n• Générer des rapports de pénalités\n• Gérer les règles et taux de pénalités';
 
   @override
-  String get manualSettingsConfigurationContent => 'Configurez l\'application pour répondre aux besoins de votre association.\n\nPARAMÈTRES DE CONTRIBUTION\n• Options de Date Par Défaut - Définir les préférences de date automatiques\n• Hôte Par Défaut - Choisir l\'hôte de contribution par défaut\n• Fréquence de Contribution - Définir les horaires de contribution réguliers\n\nPARAMÈTRES DES FONDS\n• Devise Par Défaut - Définir la devise principale (XAF)\n• Taux d\'Intérêt - Configurer les taux d\'intérêt de prêt par défaut\n• Catégories de Fonds - Personnaliser les types de fonds\n\nPARAMÈTRES SYSTÈME\n• Langue - Basculer entre français et anglais\n• Sauvegarde de Données - Créer et restaurer des sauvegardes de données\n• Options d\'Exportation - Configurer les formats d\'exportation de données\n\nPRÉFÉRENCES UTILISATEUR\n• Disposition du Tableau de Bord - Personnaliser l\'apparence du tableau de bord\n• Paramètres de Notification - Gérer les notifications de l\'application\n• Paramètres de Sécurité - Définir les préférences de sécurité de l\'application\n\nGESTION DES DONNÉES\n• Actualiser les Données - Mettre à jour toutes les informations\n• Exporter les Données - Télécharger les données dans divers formats\n• Sauvegarde et Restauration - Protéger les données de votre association';
+  String get manualSettingsConfigurationContent => 'Configurez l\'application pour répondre aux besoins de votre association.\n\nPARAMÈTRES DE CONTRIBUTION\n• Options de Date Par Défaut - Définir les préférences de date automatiques\n• Hôte Par Défaut - Choisir l\'hôte de contribution par défaut\n• Fréquence de Contribution - Définir les horaires de contribution réguliers\n\nPARAMÈTRES DE PRÊT (Admin)\n• Pourcentage de Taux d\'Intérêt Mensuel - Définir le taux en pourcentage (ex: 5%)\n• Limites de Taux Min/Max - Définir les limites de pourcentage (ex: 1%-20%)\n• Taux Personnalisés - Permettre des taux différents pour les prêts individuels\n• L\'intérêt s\'ajuste automatiquement selon le montant du prêt\n• Les modifications s\'appliquent uniquement aux nouveaux prêts\n\nPARAMÈTRES DES FONDS\n• Devise Par Défaut - Définir la devise principale (XAF)\n• Catégories de Fonds - Personnaliser les types de fonds\n• Gestion des Fonds - Configurer les règles spécifiques aux fonds\n\nPARAMÈTRES SYSTÈME\n• Langue - Basculer entre français et anglais\n• Sauvegarde de Données - Créer et restaurer des sauvegardes de données\n• Options d\'Exportation - Configurer les formats d\'exportation de données\n\nPRÉFÉRENCES UTILISATEUR\n• Disposition du Tableau de Bord - Personnaliser l\'apparence du tableau de bord\n• Paramètres de Notification - Gérer les notifications de l\'application\n• Paramètres de Sécurité - Définir les préférences de sécurité de l\'application\n\nGESTION DES DONNÉES\n• Actualiser les Données - Mettre à jour toutes les informations\n• Exporter les Données - Télécharger les données dans divers formats\n• Sauvegarde et Restauration - Protéger les données de votre association';
 
   @override
   String get manualTipsAndBestPracticesContent => 'Meilleures pratiques pour une gestion d\'association efficace.\n\nOPÉRATIONS QUOTIDIENNES\n• Enregistrer les contributions rapidement\n• Mettre à jour régulièrement les informations des membres\n• Examiner rapidement les demandes de prêt\n• Surveiller quotidiennement les soldes des fonds\n\nTÂCHES MENSUELLES\n• Générer des rapports financiers\n• Examiner les statuts des membres\n• Traiter les calculs d\'intérêts des prêts\n• Sauvegarder les données de l\'association\n\nMEILLEURES PRATIQUES\n• Tenir des registres précis de toutes les transactions\n• Communiquer clairement avec les membres sur les politiques\n• Définir des directives claires pour les contributions et prêts\n• Sauvegardes régulières des données pour éviter les pertes\n• Former plusieurs personnes à l\'utilisation de l\'application\n\nDÉPANNAGE\n• Si l\'application est lente, essayez d\'actualiser les données\n• Pour les transactions manquantes, vérifiez les filtres\n• Contactez le support pour les problèmes techniques\n• Gardez l\'application à jour pour de meilleures performances\n\nCONSEILS DE SÉCURITÉ\n• Sauvegardez régulièrement vos données\n• Gardez les informations des membres confidentielles\n• Utilisez des mots de passe forts si implémentés\n• Surveillez les transactions inhabituelles\n\nSTRATÉGIES DE CROISSANCE\n• Suivre les performances des fonds dans le temps\n• Analyser les modèles de contribution des membres\n• Définir des objectifs de fonds réalistes\n• Encourager la participation régulière des membres';
+
+  @override
+  String get loanSettings => 'Paramètres de Prêt';
+
+  @override
+  String get loanSettingsDescription => 'Configurer les taux d\'intérêt et conditions de prêt';
+
+  @override
+  String get monthlyInterestRatePercentage => 'Taux d\'Intérêt Mensuel (%)';
+
+  @override
+  String get monthlyInterestRatePercentageDescription => 'Intérêt calculé comme pourcentage du montant principal chaque mois';
+
+  @override
+  String get defaultMonthlyInterestRate => 'Taux d\'Intérêt Mensuel par Défaut';
+
+  @override
+  String get minimumInterestRatePercentage => 'Taux d\'Intérêt Minimum (%)';
+
+  @override
+  String get maximumInterestRatePercentage => 'Taux d\'Intérêt Maximum (%)';
+
+  @override
+  String get minimumInterestRate => 'Taux d\'Intérêt Minimum';
+
+  @override
+  String get maximumInterestRate => 'Taux d\'Intérêt Maximum';
+
+  @override
+  String get allowCustomRates => 'Autoriser les Taux d\'Intérêt Personnalisés';
+
+  @override
+  String get allowCustomRatesDescription => 'Permettre de définir des taux différents pour les prêts individuels';
+
+  @override
+  String get minimumLoanTerm => 'Durée Minimum de Prêt (mois)';
+
+  @override
+  String get maximumLoanTerm => 'Durée Maximum de Prêt (mois)';
+
+  @override
+  String get maxLoanToContributionRatio => 'Ratio Maximum Prêt/Contribution';
+
+  @override
+  String get maxLoanToContributionRatioDescription => 'Combien de fois les contributions des membres peuvent être empruntées';
+
+  @override
+  String get minimumContributionPeriod => 'Période Minimum de Contribution (mois)';
+
+  @override
+  String get minimumContributionPeriodDescription => 'Mois de contributions requis avant l\'éligibilité au prêt';
+
+  @override
+  String get resetToDefaults => 'Réinitialiser aux Valeurs par Défaut';
+
+  @override
+  String get resetToDefaultsDescription => 'Restaurer les paramètres originaux (taux mensuel de 5%)';
+
+  @override
+  String get resetToDefaultsConfirmation => 'Êtes-vous sûr de vouloir réinitialiser tous les paramètres de prêt à leurs valeurs par défaut ? Cette action ne peut pas être annulée.';
+
+  @override
+  String get loanSettingsSaved => 'Paramètres de prêt sauvegardés avec succès';
+
+  @override
+  String get settingsResetToDefaults => 'Paramètres réinitialisés aux valeurs par défaut';
+
+  @override
+  String get interestRateSettings => 'Paramètres de Taux d\'Intérêt';
+
+  @override
+  String get loanTermSettings => 'Paramètres de Durée de Prêt';
+
+  @override
+  String get loanLimits => 'Limites de Prêt';
+
+  @override
+  String get actions => 'Actions';
+
+  @override
+  String get configureLoanParameters => 'Configurer les paramètres de prêt pour votre association';
+
+  @override
+  String get changesAffectNewLoansOnly => 'Les modifications n\'affectent que les nouveaux prêts. Les prêts existants conservent leurs taux originaux.';
+
+  @override
+  String get percentageBasedInterest => 'Intérêt Basé sur Pourcentage';
+
+  @override
+  String get interestScalesWithLoanAmount => 'Le montant d\'intérêt s\'ajuste automatiquement selon la taille du prêt';
+
+  @override
+  String get exampleInterestCalculation => 'Exemple : taux de 5% sur 100 000 CFA = 5 000 CFA d\'intérêt mensuel';
+
+  @override
+  String get interestCalculatedAsPercentage => 'L\'intérêt est calculé comme pourcentage du montant principal chaque mois';
+
+  @override
+  String get monthlyInterestAmount => 'Montant d\'Intérêt Mensuel';
+
+  @override
+  String get totalScheduledInterest => 'Total d\'Intérêt Prévu';
+
+  @override
+  String get totalScheduledPayment => 'Total de Paiement Prévu';
+
+  @override
+  String get interestAccumulatesMonthlyNote => 'Note : L\'intérêt s\'accumule mensuellement basé sur le montant principal. Le total réel peut varier selon le calendrier de paiement.';
+
+  @override
+  String get chooseContactMethod => 'Choisissez comment vous souhaitez contacter le développeur :';
+
+  @override
+  String get whatsappContact => 'WhatsApp';
+
+  @override
+  String get phoneCallContact => 'Appel Téléphonique';
+
+  @override
+  String get smsContact => 'SMS';
+
+  @override
+  String get mobileMoneyDetails => '📱 Mobile Money';
+
+  @override
+  String get supportAppMessage => 'Votre soutien aide à maintenir et améliorer cette application pour tous ! 🙏';
+
+  @override
+  String get contactDeveloper => 'Contacter le Développeur';
+
+  @override
+  String get openingWhatsApp => 'Ouverture de WhatsApp...';
+
+  @override
+  String get openingPhone => 'Ouverture de l\'application téléphone...';
+
+  @override
+  String get openingSMS => 'Ouverture de l\'application SMS...';
+
+  @override
+  String couldNotLaunch(String method) {
+    return 'Impossible de lancer $method';
+  }
+
+  @override
+  String get supportDeveloper => 'Soutenir le Développeur';
+
+  @override
+  String get licenseRestrictions => 'Licence et Restrictions d\'Usage';
+
+  @override
+  String get personalUseOnly => '📋 Usage Personnel et Non-Commercial Uniquement';
+
+  @override
+  String get personalUseDescription => 'Cette application est sous licence pour usage personnel et non-commercial par les associations et groupes communautaires uniquement.';
+
+  @override
+  String get commercialProhibited => '🚫 Usage Commercial Interdit';
+
+  @override
+  String get commercialDescription => 'L\'usage commercial, la revente ou la distribution à des fins lucratives est strictement interdite sans permission écrite explicite.';
+
+  @override
+  String get modificationRestricted => '⚙️ Restrictions de Modification';
+
+  @override
+  String get modificationDescription => 'L\'ingénierie inverse, la décompilation ou la création d\'œuvres dérivées n\'est pas autorisée.';
+
+  @override
+  String get supportRequired => '💝 Soutien Requis pour Usage Continu';
+
+  @override
+  String get supportRequiredDescription => 'Les contributions de soutien régulières aident à maintenir et améliorer cette application gratuite pour tous.';
+
+  @override
+  String get licenseViolation => '⚠️ Conséquences de Violation de Licence';
+
+  @override
+  String get licenseViolationDescription => 'La violation de ces termes peut entraîner des restrictions d\'accès ou des actions légales.';
+
+  @override
+  String get contactForCommercial => '📧 Licence Commerciale Disponible';
+
+  @override
+  String get contactForCommercialDescription => 'Contactez le développeur pour les options de licence commerciale et les fonctionnalités d\'entreprise.';
+
+  @override
+  String get agreeToTerms => 'En utilisant cette application, vous acceptez ces termes et conditions.';
+
+  @override
+  String get readFullLicense => 'Lire la Licence Complète';
+
+  @override
+  String get understandRestrictions => 'Je Comprends';
+
+  @override
+  String get licenseActivation => 'Activation de Licence';
+
+  @override
+  String get enterLicenseCode => 'Entrer le Code de Licence';
+
+  @override
+  String get licenseCodeHint => 'Entrez votre code de licence (ex: ASSO-XXXX-XXXX-XXXX)';
+
+  @override
+  String get activateLicense => 'Activer la Licence';
+
+  @override
+  String get licenseStatus => 'Statut de la Licence';
+
+  @override
+  String get trialVersion => 'Version d\'Essai';
+
+  @override
+  String get fullVersion => 'Version Complète';
+
+  @override
+  String get developerVersion => 'Version Développeur';
+
+  @override
+  String get licenseExpired => 'Licence Expirée';
+
+  @override
+  String daysRemaining(int days) {
+    return '$days jours restants';
+  }
+
+  @override
+  String get unlimitedAccess => 'Accès Illimité';
+
+  @override
+  String get featureRestricted => 'Fonctionnalité Restreinte';
+
+  @override
+  String get featureRestrictedMessage => 'Cette fonctionnalité nécessite une licence complète. Veuillez activer votre licence ou contacter le développeur.';
+
+  @override
+  String get upgradeToFull => 'Passer à la Version Complète';
+
+  @override
+  String get trialExpiredTitle => 'Période d\'Essai Expirée';
+
+  @override
+  String get trialExpiredMessage => 'Votre essai de 30 jours a expiré. Veuillez activer une licence complète pour continuer à utiliser l\'application.';
+
+  @override
+  String get invalidLicenseCode => 'Format de code de licence invalide';
+
+  @override
+  String get licenseActivationFailed => 'Échec de l\'activation de la licence';
+
+  @override
+  String get licenseActivatedSuccessfully => 'Licence activée avec succès !';
+
+  @override
+  String get currentLicense => 'Licence Actuelle';
+
+  @override
+  String get activationDate => 'Date d\'Activation';
+
+  @override
+  String get expirationDate => 'Date d\'Expiration';
+
+  @override
+  String get enabledFeatures => 'Fonctionnalités Activées';
+
+  @override
+  String get deactivateLicense => 'Désactiver la Licence';
+
+  @override
+  String get confirmDeactivation => 'Êtes-vous sûr de vouloir désactiver votre licence ? Cela basculera en mode d\'essai.';
+
+  @override
+  String get licenseDeactivated => 'Licence désactivée. Basculé en mode d\'essai.';
+
+  @override
+  String get contactForLicense => 'Contacter le Développeur pour une Licence';
+
+  @override
+  String get trialLimitations => 'Limitations de l\'Essai';
+
+  @override
+  String get trialLimitationsMessage => 'La version d\'essai a des fonctionnalités limitées. Certaines fonctionnalités peuvent être restreintes ou avoir des limites d\'utilisation.';
+
+  @override
+  String get getFullLicense => 'Obtenir une Licence Complète';
+
+  @override
+  String get licensePricing => 'Tarification de la Licence';
+
+  @override
+  String get fullLicensePrice => 'Licence Complète : 10 000 CFA (paiement unique)';
+
+  @override
+  String get licenseIncludes => '• Inclut toutes les fonctionnalités premium\n• Membres et transactions illimités\n• Mises à jour et support à vie';
+
+  @override
+  String get purchaseInstructions => 'Envoyez 10 000 CFA avec le message : \"DEMANDE DE LICENCE\" et les informations de votre appareil. Vous recevrez votre code de licence dans les 24 heures.';
+
+  @override
+  String get supportAndGetLicense => 'Soutenez le développeur et obtenez votre licence complète !';
+
+  @override
+  String get backToMoreScreen => 'Retour à l\'Écran Plus';
 }

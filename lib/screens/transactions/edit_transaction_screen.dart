@@ -236,7 +236,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     value: fund.id,
                     child: Text(fund.name),
                   );
-                }).toList(),
+                }),
               ],
               onChanged: (value) {
                 setState(() {

@@ -1,5 +1,5 @@
 name: asso_njangui
-description: "A new Flutter project."
+description: "Association Management App - Manage members, contributions, loans, and finances for community associations."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -44,6 +44,9 @@ dependencies:
   equatable: ^2.0.7
   hive_generator: ^2.0.1
   build_runner: ^2.5.4
+  url_launcher: ^6.2.4
+  crypto: ^3.0.3
+  device_info_plus: ^10.1.0
 
 dev_dependencies:
   flutter_test:

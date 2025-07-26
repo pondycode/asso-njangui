@@ -64,7 +64,15 @@ class AppStateProvider extends ChangeNotifier {
 
   // Initialize data
   Future<void> initialize() async {
-    await _loadAllData();
+    try {
+      // Ensure database is initialized
+      if (!_db.isInitialized) {
+        await _db.init();
+      }
+      await _loadAllData();
+    } catch (e) {
+      _setError('Failed to initialize app state: $e');
+    }
   }
 
   Future<void> _loadAllData() async {

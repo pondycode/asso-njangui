@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Permissions for app functionality -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:label="asso_njangui"
+        android:label="Association Manager"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

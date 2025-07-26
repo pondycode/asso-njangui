@@ -17,9 +17,9 @@ class LoanSettingsAdapter extends TypeAdapter<LoanSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LoanSettings(
-      defaultMonthlyInterestRate: fields[0] as double,
-      minimumInterestRate: fields[1] as double,
-      maximumInterestRate: fields[2] as double,
+      monthlyInterestRatePercentage: fields[0] as double,
+      minimumInterestRatePercentage: fields[1] as double,
+      maximumInterestRatePercentage: fields[2] as double,
       allowCustomRates: fields[3] as bool,
       minimumLoanTermMonths: fields[4] as int,
       maximumLoanTermMonths: fields[5] as int,
@@ -36,11 +36,11 @@ class LoanSettingsAdapter extends TypeAdapter<LoanSettings> {
     writer
       ..writeByte(11)
       ..writeByte(0)
-      ..write(obj.defaultMonthlyInterestRate)
+      ..write(obj.monthlyInterestRatePercentage)
       ..writeByte(1)
-      ..write(obj.minimumInterestRate)
+      ..write(obj.minimumInterestRatePercentage)
       ..writeByte(2)
-      ..write(obj.maximumInterestRate)
+      ..write(obj.maximumInterestRatePercentage)
       ..writeByte(3)
       ..write(obj.allowCustomRates)
       ..writeByte(4)

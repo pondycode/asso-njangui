@@ -9,40 +9,50 @@ import 'models/loan.dart';
 import 'models/contribution.dart';
 import 'models/penalty.dart';
 import 'models/loan_settings.dart';
+import 'models/app_license.dart';
 import 'services/database_service.dart';
 import 'providers/app_state_provider.dart';
 import 'providers/language_provider.dart';
 import 'providers/contribution_settings_provider.dart';
+import 'providers/fund_settings_provider.dart';
 import 'providers/loan_settings_provider.dart';
+import 'providers/license_provider.dart';
 import 'screens/dashboard_screen.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive
-  await Hive.initFlutter();
+  try {
+    // Initialize Hive
+    await Hive.initFlutter();
 
-  // Register Hive adapters
-  Hive.registerAdapter(MemberAdapter());
-  Hive.registerAdapter(FundAdapter());
-  Hive.registerAdapter(TransactionAdapter());
-  Hive.registerAdapter(LoanAdapter());
-  Hive.registerAdapter(ContributionAdapter());
-  Hive.registerAdapter(FundContributionAdapter());
-  Hive.registerAdapter(MemberStatusAdapter());
-  Hive.registerAdapter(FundTypeAdapter());
-  Hive.registerAdapter(TransactionTypeAdapter());
-  Hive.registerAdapter(LoanStatusAdapter());
-  Hive.registerAdapter(PenaltyAdapter());
-  Hive.registerAdapter(PenaltyRuleAdapter());
-  Hive.registerAdapter(PenaltyTypeAdapter());
-  Hive.registerAdapter(PenaltyStatusAdapter());
-  Hive.registerAdapter(PenaltyCalculationTypeAdapter());
-  Hive.registerAdapter(LoanSettingsAdapter());
+    // Register Hive adapters
+    Hive.registerAdapter(MemberAdapter());
+    Hive.registerAdapter(FundAdapter());
+    Hive.registerAdapter(TransactionAdapter());
+    Hive.registerAdapter(LoanAdapter());
+    Hive.registerAdapter(ContributionAdapter());
+    Hive.registerAdapter(FundContributionAdapter());
+    Hive.registerAdapter(MemberStatusAdapter());
+    Hive.registerAdapter(FundTypeAdapter());
+    Hive.registerAdapter(TransactionTypeAdapter());
+    Hive.registerAdapter(LoanStatusAdapter());
+    Hive.registerAdapter(PenaltyAdapter());
+    Hive.registerAdapter(PenaltyRuleAdapter());
+    Hive.registerAdapter(PenaltyTypeAdapter());
+    Hive.registerAdapter(PenaltyStatusAdapter());
+    Hive.registerAdapter(PenaltyCalculationTypeAdapter());
+    Hive.registerAdapter(LoanSettingsAdapter());
+    Hive.registerAdapter(AppLicenseAdapter());
+    Hive.registerAdapter(LicenseTypeAdapter());
 
-  // Initialize database service
-  await DatabaseService.instance.init();
+    // Initialize database service
+    await DatabaseService.instance.init();
+  } catch (e) {
+    // Handle initialization errors gracefully
+    debugPrint('Initialization error: $e');
+  }
 
   runApp(const FinancialManagementApp());
 }
@@ -57,7 +67,9 @@ class FinancialManagementApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AppStateProvider()),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => ContributionSettingsProvider()),
+        ChangeNotifierProvider(create: (_) => FundSettingsProvider()),
         ChangeNotifierProvider(create: (_) => LoanSettingsProvider()),
+        ChangeNotifierProvider(create: (_) => LicenseProvider()),
       ],
       child: const AppInitializer(),
     );
@@ -76,11 +88,38 @@ class _AppInitializerState extends State<AppInitializer> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<LanguageProvider>().initialize();
-      context.read<AppStateProvider>().initialize();
-      context.read<ContributionSettingsProvider>().initialize();
-      context.read<LoanSettingsProvider>().initialize();
+      _initializeProviders();
     });
+  }
+
+  Future<void> _initializeProviders() async {
+    if (!mounted) return;
+
+    try {
+      // Initialize providers in order
+      await context.read<LanguageProvider>().initialize();
+      if (!mounted) return;
+
+      await context.read<AppStateProvider>().initialize();
+      if (!mounted) return;
+
+      // Add a small delay to ensure database is fully ready
+      await Future.delayed(const Duration(milliseconds: 100));
+      if (!mounted) return;
+
+      await context.read<ContributionSettingsProvider>().initialize();
+      if (!mounted) return;
+
+      await context.read<FundSettingsProvider>().initialize();
+      if (!mounted) return;
+
+      await context.read<LoanSettingsProvider>().initialize();
+      if (!mounted) return;
+
+      await context.read<LicenseProvider>().initialize();
+    } catch (e) {
+      debugPrint('Provider initialization error: $e');
+    }
   }
 
   @override
@@ -88,7 +127,7 @@ class _AppInitializerState extends State<AppInitializer> {
     return Consumer<LanguageProvider>(
       builder: (context, languageProvider, child) {
         return MaterialApp(
-          title: 'asso_njangui',
+          title: 'Association Manager',
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,

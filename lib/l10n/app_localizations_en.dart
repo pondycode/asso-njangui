@@ -839,16 +839,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get suggestedAmounts => '💡 Suggested amounts:';
 
   @override
-  String get coffeeAmount => '500 CFA ☕ Coffee';
+  String get coffeeAmount => '☕ Coffee';
 
   @override
-  String get snackAmount => '1,000 CFA 🥐 Snack';
+  String get snackAmount => '🥐 Snack';
 
   @override
-  String get mealAmount => '2,500 CFA 🍕 Meal';
+  String get mealAmount => '🍕 Meal';
 
   @override
-  String get generousAmount => '5,000 CFA ❤️ Generous';
+  String get generousAmount => '❤️ Generous';
 
   @override
   String get supportHelpMessage => 'Your support helps maintain and improve this app for everyone! 🙏';
@@ -920,7 +920,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get interestAccumulatesMonthly => 'Interest accumulates monthly regardless of term';
 
   @override
-  String get fixedMonthlyInterest => 'Fixed monthly interest: CFA 3,150';
+  String get fixedMonthlyInterest => 'Monthly interest rate (configurable)';
 
   @override
   String get interestDue => 'Interest Due';
@@ -929,7 +929,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get monthByMonthAccumulation => 'Month-by-month accumulation';
 
   @override
-  String get interestStructure => 'CFA 3,150 added each month since loan start';
+  String get interestStructure => 'Configurable amount added each month since loan start';
 
   @override
   String get monthsElapsed => 'Months Elapsed';
@@ -938,11 +938,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get monthByMonthInterestModel => 'Month-by-Month Interest Model:';
 
   @override
-  String get monthlyInterestFixed => 'Monthly Interest = Fixed CFA 3,150';
+  String get monthlyInterestFixed => 'Monthly Interest = Configurable Rate';
 
   @override
   String totalInterestDue(Object amount, Object months) {
-    return 'Total Interest Due = CFA 3,150 × $months months = $amount';
+    return 'Total Interest Due = Monthly Rate × $months months = $amount';
   }
 
   @override
@@ -1053,7 +1053,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manualContributionManagementContent => 'Record and track member contributions to various funds.\n\nMAKING CONTRIBUTIONS\n1. Tap \'Contribute\' from Dashboard\n2. Select the member making the contribution\n3. Choose the fund to contribute to\n4. Enter contribution amount\n5. Set contribution date (defaults to today)\n6. Add notes if needed\n7. Submit the contribution\n\nCONTRIBUTION FEATURES\n• Duplicate detection - Warns if member already contributed on selected date\n• Multiple fund support - Contribute to different fund types\n• Contribution history - Track all past contributions\n• Default settings - Set default host and date preferences\n\nBULK CONTRIBUTIONS\n• Process multiple contributions at once\n• Import contribution data\n• Batch processing for efficiency\n\nREPORTING\n• View contribution summaries\n• Export contribution data\n• Generate contribution reports';
 
   @override
-  String get manualLoanManagementContent => 'Manage loan applications, approvals, and repayments.\n\nLOAN SYSTEM\nThe app uses a month-by-month interest model:\n• Interest accumulates each month regardless of payments\n• Fixed monthly interest rate\n• No fixed 12-month terms\n• Total amount due = Principal + (Monthly Interest × Months Elapsed)\n\nLOAN PROCESS\n1. Member applies for loan\n2. Review loan application\n3. Approve or reject loan\n4. Track loan payments and interest\n5. Monitor outstanding balances\n\nLOAN FEATURES\n• Flexible repayment terms\n• Interest calculation tracking\n• Payment history\n• Outstanding balance monitoring\n• Loan status management\n\nLOAN STATUSES\n• Pending - Awaiting approval\n• Approved - Loan approved and active\n• Completed - Fully repaid\n• Rejected - Application denied';
+  String get manualLoanManagementContent => 'Manage loan applications, approvals, and repayments with percentage-based interest.\n\nPERCENTAGE-BASED LOAN SYSTEM\nThe app uses a dynamic month-by-month interest model:\n• Interest calculated as percentage of principal amount\n• Interest accumulates each month regardless of payments\n• Configurable monthly interest percentage (default: 5%)\n• No fixed 12-month terms\n• Total amount due = Principal + (Principal × Rate% × Months Elapsed)\n\nINTEREST EXAMPLES\n• 100,000 CFA loan at 5% = 5,000 CFA monthly interest\n• 50,000 CFA loan at 5% = 2,500 CFA monthly interest\n• Interest scales automatically with loan amount\n\nLOAN SETTINGS (Admin)\n• Configure monthly interest rate percentage\n• Set minimum and maximum percentage bounds (e.g., 1%-20%)\n• Enable/disable custom rates for individual loans\n• Changes apply to new loans only\n• Existing loans keep their original rates\n\nLOAN APPLICATION PROCESS\n1. Member applies for loan with desired amount\n2. System calculates monthly interest based on percentage\n3. Review loan application and terms\n4. Approve or reject loan\n5. Track loan payments and accumulated interest\n6. Monitor outstanding balances\n\nLOAN FEATURES\n• Percentage-based interest calculation\n• Interest scales with loan amount\n• Flexible repayment terms\n• Dynamic interest rate configuration\n• Real-time interest calculation\n• Payment history tracking\n• Outstanding balance monitoring\n• Loan status management\n\nLOAN STATUSES\n• Pending - Awaiting approval\n• Approved - Loan approved and active\n• Completed - Fully repaid\n• Rejected - Application denied\n\nBENEFITS OF PERCENTAGE SYSTEM\n• Fair interest proportional to loan amount\n• Transparent calculation method\n• Easy to understand and configure\n• Scales automatically for any loan size';
 
   @override
   String get manualTransactionManagementContent => 'View and manage all financial transactions in the system.\n\nTRANSACTION TYPES\n• Contributions - Member fund contributions\n• Loan Disbursements - Loan payments to members\n• Loan Repayments - Payments from borrowers\n• Penalties - Fines and penalty payments\n• Transfers - Fund transfers between accounts\n\nTRANSACTION DETAILS\nEach transaction includes:\n• Date and time\n• Member involved\n• Amount (credit or debit)\n• Fund affected\n• Description/notes\n• Reference number\n\nTRANSACTION MANAGEMENT\n• View transaction history\n• Filter by date, member, or type\n• Search transactions\n• Export transaction data\n• Generate financial reports\n\nACCESS POINTS\n• Dashboard - Recent transactions\n• Top navigation - Full transaction list\n• Member profiles - Member-specific transactions\n• Fund details - Fund-specific transactions';
@@ -1062,8 +1062,312 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manualPenaltiesManagementContent => 'Manage member penalties and fines effectively.\n\nPENALTY TYPES\n• Late Fees - For overdue payments\n• Missed Contributions - For skipped contributions\n• Loan Defaults - For loan payment delays\n• Meeting Absence - For missing meetings\n• Rule Violations - For breaking association rules\n• Custom Penalties - For other infractions\n\nPENALTY STRUCTURE\n• Fixed Amount - Set penalty amount\n• Percentage - Based on contribution/loan amount\n• Daily Rate - Accumulates daily\n• Tiered Penalty - Increases with severity\n\nPENALTY STATUS\n• Pending - Recently applied, awaiting action\n• Active - Currently in effect\n• Paid - Penalty has been paid\n• Waived - Penalty forgiven\n• Cancelled - Penalty removed\n\nPENALTY MANAGEMENT\n• Apply penalties to members\n• Track penalty payments\n• Generate penalty reports\n• Manage penalty rules and rates';
 
   @override
-  String get manualSettingsConfigurationContent => 'Configure the app to match your association\'s needs.\n\nCONTRIBUTION SETTINGS\n• Default Date Options - Set automatic date preferences\n• Default Host - Choose default contribution host\n• Contribution Frequency - Set regular contribution schedules\n\nFUND SETTINGS\n• Default Currency - Set primary currency (XAF)\n• Interest Rates - Configure default loan interest rates\n• Fund Categories - Customize fund types\n\nSYSTEM SETTINGS\n• Language - Switch between French and English\n• Data Backup - Create and restore data backups\n• Export Options - Configure data export formats\n\nUSER PREFERENCES\n• Dashboard Layout - Customize dashboard appearance\n• Notification Settings - Manage app notifications\n• Security Settings - Set app security preferences\n\nDATA MANAGEMENT\n• Refresh Data - Update all information\n• Export Data - Download data in various formats\n• Backup & Restore - Protect your association data';
+  String get manualSettingsConfigurationContent => 'Configure the app to match your association\'s needs.\n\nCONTRIBUTION SETTINGS\n• Default Date Options - Set automatic date preferences\n• Default Host - Choose default contribution host\n• Contribution Frequency - Set regular contribution schedules\n\nLOAN SETTINGS (Admin)\n• Monthly Interest Rate Percentage - Set percentage rate (e.g., 5%)\n• Minimum/Maximum Rate Bounds - Define percentage limits (e.g., 1%-20%)\n• Custom Rates - Allow different rates for individual loans\n• Interest scales automatically with loan amount\n• Changes apply to new loans only\n\nFUND SETTINGS\n• Default Currency - Set primary currency (XAF)\n• Fund Categories - Customize fund types\n• Fund Management - Configure fund-specific rules\n\nSYSTEM SETTINGS\n• Language - Switch between French and English\n• Data Backup - Create and restore data backups\n• Export Options - Configure data export formats\n\nUSER PREFERENCES\n• Dashboard Layout - Customize dashboard appearance\n• Notification Settings - Manage app notifications\n• Security Settings - Set app security preferences\n\nDATA MANAGEMENT\n• Refresh Data - Update all information\n• Export Data - Download data in various formats\n• Backup & Restore - Protect your association data';
 
   @override
   String get manualTipsAndBestPracticesContent => 'Best practices for effective association management.\n\nDAILY OPERATIONS\n• Record contributions promptly\n• Update member information regularly\n• Review loan applications quickly\n• Monitor fund balances daily\n\nMONTHLY TASKS\n• Generate financial reports\n• Review member statuses\n• Process loan interest calculations\n• Backup association data\n\nBEST PRACTICES\n• Keep accurate records of all transactions\n• Communicate clearly with members about policies\n• Set clear contribution and loan guidelines\n• Regular data backups to prevent loss\n• Train multiple people on app usage\n\nTROUBLESHOoting\n• If app is slow, try refreshing data\n• For missing transactions, check filters\n• Contact support for technical issues\n• Keep app updated for best performance\n\nSECURITY TIPS\n• Regularly backup your data\n• Keep member information confidential\n• Use strong passwords if implemented\n• Monitor for unusual transactions\n\nGROWTH STRATEGIES\n• Track fund performance over time\n• Analyze member contribution patterns\n• Set realistic fund targets\n• Encourage regular member participation';
+
+  @override
+  String get loanSettings => 'Loan Settings';
+
+  @override
+  String get loanSettingsDescription => 'Configure loan interest rates and terms';
+
+  @override
+  String get monthlyInterestRatePercentage => 'Monthly Interest Rate (%)';
+
+  @override
+  String get monthlyInterestRatePercentageDescription => 'Interest calculated as percentage of principal amount each month';
+
+  @override
+  String get defaultMonthlyInterestRate => 'Default Monthly Interest Rate';
+
+  @override
+  String get minimumInterestRatePercentage => 'Minimum Interest Rate (%)';
+
+  @override
+  String get maximumInterestRatePercentage => 'Maximum Interest Rate (%)';
+
+  @override
+  String get minimumInterestRate => 'Minimum Interest Rate';
+
+  @override
+  String get maximumInterestRate => 'Maximum Interest Rate';
+
+  @override
+  String get allowCustomRates => 'Allow Custom Interest Rates';
+
+  @override
+  String get allowCustomRatesDescription => 'Allow setting different rates for individual loans';
+
+  @override
+  String get minimumLoanTerm => 'Minimum Loan Term (months)';
+
+  @override
+  String get maximumLoanTerm => 'Maximum Loan Term (months)';
+
+  @override
+  String get maxLoanToContributionRatio => 'Max Loan to Contribution Ratio';
+
+  @override
+  String get maxLoanToContributionRatioDescription => 'How many times member contributions can be borrowed';
+
+  @override
+  String get minimumContributionPeriod => 'Minimum Contribution Period (months)';
+
+  @override
+  String get minimumContributionPeriodDescription => 'Required months of contributions before loan eligibility';
+
+  @override
+  String get resetToDefaults => 'Reset to Defaults';
+
+  @override
+  String get resetToDefaultsDescription => 'Restore original settings (5% monthly rate)';
+
+  @override
+  String get resetToDefaultsConfirmation => 'Are you sure you want to reset all loan settings to their default values? This action cannot be undone.';
+
+  @override
+  String get loanSettingsSaved => 'Loan settings saved successfully';
+
+  @override
+  String get settingsResetToDefaults => 'Settings reset to defaults';
+
+  @override
+  String get interestRateSettings => 'Interest Rate Settings';
+
+  @override
+  String get loanTermSettings => 'Loan Term Settings';
+
+  @override
+  String get loanLimits => 'Loan Limits';
+
+  @override
+  String get actions => 'Actions';
+
+  @override
+  String get configureLoanParameters => 'Configure loan parameters for your association';
+
+  @override
+  String get changesAffectNewLoansOnly => 'Changes only affect new loans. Existing loans keep their original rates.';
+
+  @override
+  String get percentageBasedInterest => 'Percentage-Based Interest';
+
+  @override
+  String get interestScalesWithLoanAmount => 'Interest amount automatically scales with loan size';
+
+  @override
+  String get exampleInterestCalculation => 'Example: 5% rate on 100,000 CFA = 5,000 CFA monthly interest';
+
+  @override
+  String get interestCalculatedAsPercentage => 'Interest is calculated as a percentage of the principal amount each month';
+
+  @override
+  String get monthlyInterestAmount => 'Monthly Interest Amount';
+
+  @override
+  String get totalScheduledInterest => 'Total Scheduled Interest';
+
+  @override
+  String get totalScheduledPayment => 'Total Scheduled Payment';
+
+  @override
+  String get interestAccumulatesMonthlyNote => 'Note: Interest accumulates monthly based on principal amount. Actual total may vary depending on payment schedule.';
+
+  @override
+  String get chooseContactMethod => 'Choose how you\'d like to contact the developer:';
+
+  @override
+  String get whatsappContact => 'WhatsApp';
+
+  @override
+  String get phoneCallContact => 'Phone Call';
+
+  @override
+  String get smsContact => 'SMS';
+
+  @override
+  String get mobileMoneyDetails => '📱 Mobile Money';
+
+  @override
+  String get supportAppMessage => 'Your support helps maintain and improve this app for everyone! 🙏';
+
+  @override
+  String get contactDeveloper => 'Contact Developer';
+
+  @override
+  String get openingWhatsApp => 'Opening WhatsApp...';
+
+  @override
+  String get openingPhone => 'Opening phone app...';
+
+  @override
+  String get openingSMS => 'Opening SMS app...';
+
+  @override
+  String couldNotLaunch(String method) {
+    return 'Could not launch $method';
+  }
+
+  @override
+  String get supportDeveloper => 'Support the Developer';
+
+  @override
+  String get licenseRestrictions => 'License & Usage Restrictions';
+
+  @override
+  String get personalUseOnly => '📋 Personal & Non-Commercial Use Only';
+
+  @override
+  String get personalUseDescription => 'This app is licensed for personal and non-commercial use by associations and community groups only.';
+
+  @override
+  String get commercialProhibited => '🚫 Commercial Use Prohibited';
+
+  @override
+  String get commercialDescription => 'Commercial use, resale, or distribution for profit is strictly prohibited without explicit written permission.';
+
+  @override
+  String get modificationRestricted => '⚙️ Modification Restrictions';
+
+  @override
+  String get modificationDescription => 'Reverse engineering, decompiling, or creating derivative works is not permitted.';
+
+  @override
+  String get supportRequired => '💝 Support Required for Continued Use';
+
+  @override
+  String get supportRequiredDescription => 'Regular support contributions help maintain and improve this free app for everyone.';
+
+  @override
+  String get licenseViolation => '⚠️ License Violation Consequences';
+
+  @override
+  String get licenseViolationDescription => 'Violation of these terms may result in access restrictions or legal action.';
+
+  @override
+  String get contactForCommercial => '📧 Commercial Licensing Available';
+
+  @override
+  String get contactForCommercialDescription => 'Contact the developer for commercial licensing options and enterprise features.';
+
+  @override
+  String get agreeToTerms => 'By using this app, you agree to these terms and conditions.';
+
+  @override
+  String get readFullLicense => 'Read Full License';
+
+  @override
+  String get understandRestrictions => 'I Understand';
+
+  @override
+  String get licenseActivation => 'License Activation';
+
+  @override
+  String get enterLicenseCode => 'Enter License Code';
+
+  @override
+  String get licenseCodeHint => 'Enter your license code (e.g., ASSO-XXXX-XXXX-XXXX)';
+
+  @override
+  String get activateLicense => 'Activate License';
+
+  @override
+  String get licenseStatus => 'License Status';
+
+  @override
+  String get trialVersion => 'Trial Version';
+
+  @override
+  String get fullVersion => 'Full Version';
+
+  @override
+  String get developerVersion => 'Developer Version';
+
+  @override
+  String get licenseExpired => 'License Expired';
+
+  @override
+  String daysRemaining(int days) {
+    return '$days days remaining';
+  }
+
+  @override
+  String get unlimitedAccess => 'Unlimited Access';
+
+  @override
+  String get featureRestricted => 'Feature Restricted';
+
+  @override
+  String get featureRestrictedMessage => 'This feature requires a full license. Please activate your license or contact the developer.';
+
+  @override
+  String get upgradeToFull => 'Upgrade to Full Version';
+
+  @override
+  String get trialExpiredTitle => 'Trial Period Expired';
+
+  @override
+  String get trialExpiredMessage => 'Your 30-day trial has expired. Please activate a full license to continue using the app.';
+
+  @override
+  String get invalidLicenseCode => 'Invalid license code format';
+
+  @override
+  String get licenseActivationFailed => 'License activation failed';
+
+  @override
+  String get licenseActivatedSuccessfully => 'License activated successfully!';
+
+  @override
+  String get currentLicense => 'Current License';
+
+  @override
+  String get activationDate => 'Activation Date';
+
+  @override
+  String get expirationDate => 'Expiration Date';
+
+  @override
+  String get enabledFeatures => 'Enabled Features';
+
+  @override
+  String get deactivateLicense => 'Deactivate License';
+
+  @override
+  String get confirmDeactivation => 'Are you sure you want to deactivate your license? This will switch to trial mode.';
+
+  @override
+  String get licenseDeactivated => 'License deactivated. Switched to trial mode.';
+
+  @override
+  String get contactForLicense => 'Contact Developer for License';
+
+  @override
+  String get trialLimitations => 'Trial Limitations';
+
+  @override
+  String get trialLimitationsMessage => 'Trial version has limited functionality. Some features may be restricted or have usage limits.';
+
+  @override
+  String get getFullLicense => 'Get Full License';
+
+  @override
+  String get licensePricing => 'License Pricing';
+
+  @override
+  String get fullLicensePrice => 'Full License: 10,000 CFA (one-time payment)';
+
+  @override
+  String get licenseIncludes => '• Includes all premium features\n• Unlimited members and transactions\n• Lifetime updates and support';
+
+  @override
+  String get purchaseInstructions => 'Send 10,000 CFA with message: \"LICENSE REQUEST\" and your device info. You\'ll receive your license code within 24 hours.';
+
+  @override
+  String get supportAndGetLicense => 'Support the developer and get your full license!';
+
+  @override
+  String get backToMoreScreen => 'Back to More Screen';
 }

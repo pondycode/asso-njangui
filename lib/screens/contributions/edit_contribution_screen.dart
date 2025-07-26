@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/contribution.dart';
-import '../../models/member.dart';
-import '../../models/fund.dart';
 import '../../providers/app_state_provider.dart';
 
 class EditContributionScreen extends StatefulWidget {
@@ -25,7 +23,7 @@ class _EditContributionScreenState extends State<EditContributionScreen> {
 
   late DateTime _selectedDate;
   String? _selectedMemberId;
-  Map<String, double> _fundAmounts = {};
+  final Map<String, double> _fundAmounts = {};
   bool _isLoading = false;
 
   @override

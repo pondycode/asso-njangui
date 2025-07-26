@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/loan_settings_provider.dart';
-import '../../utils/currency_formatter.dart';
 
 class LoanSettingsScreen extends StatefulWidget {
   const LoanSettingsScreen({super.key});
@@ -44,14 +44,17 @@ class _LoanSettingsScreenState extends State<LoanSettingsScreen> {
 
   void _loadCurrentSettings() {
     final settings = context.read<LoanSettingsProvider>().settings;
-    
-    _defaultRateController.text = settings.defaultMonthlyInterestRate.toString();
-    _minRateController.text = settings.minimumInterestRate.toString();
-    _maxRateController.text = settings.maximumInterestRate.toString();
+
+    _defaultRateController.text = settings.monthlyInterestRatePercentage
+        .toString();
+    _minRateController.text = settings.minimumInterestRatePercentage.toString();
+    _maxRateController.text = settings.maximumInterestRatePercentage.toString();
     _minTermController.text = settings.minimumLoanTermMonths.toString();
     _maxTermController.text = settings.maximumLoanTermMonths.toString();
-    _maxLoanRatioController.text = settings.maxLoanToContributionRatio.toString();
-    _minContributionController.text = settings.minimumContributionMonths.toString();
+    _maxLoanRatioController.text = settings.maxLoanToContributionRatio
+        .toString();
+    _minContributionController.text = settings.minimumContributionMonths
+        .toString();
     _allowCustomRates = settings.allowCustomRates;
   }
 
@@ -132,16 +135,37 @@ class _LoanSettingsScreenState extends State<LoanSettingsScreen> {
               'Interest Rate Settings',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.blue.shade200),
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.interestCalculatedAsPercentage,
+                style: const TextStyle(fontSize: 14, color: Colors.blue),
+              ),
+            ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _defaultRateController,
-              decoration: const InputDecoration(
-                labelText: 'Default Monthly Interest Rate',
-                hintText: 'Enter amount (e.g., 3150)',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(
+                  context,
+                )!.monthlyInterestRatePercentage,
+                hintText: 'Enter percentage (e.g., 5.0)',
+                suffixText: '% of principal',
+                helperText: AppLocalizations.of(
+                  context,
+                )!.monthlyInterestRatePercentageDescription,
+                border: const OutlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))],
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+              ],
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter default interest rate';
@@ -160,11 +184,14 @@ class _LoanSettingsScreenState extends State<LoanSettingsScreen> {
                   child: TextFormField(
                     controller: _minRateController,
                     decoration: const InputDecoration(
-                      labelText: 'Minimum Rate',
+                      labelText: 'Minimum Rate (%)',
+                      suffixText: '%',
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                    ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Required';
@@ -182,11 +209,14 @@ class _LoanSettingsScreenState extends State<LoanSettingsScreen> {
                   child: TextFormField(
                     controller: _maxRateController,
                     decoration: const InputDecoration(
-                      labelText: 'Maximum Rate',
+                      labelText: 'Maximum Rate (%)',
+                      suffixText: '%',
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                    ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Required';
@@ -208,7 +238,9 @@ class _LoanSettingsScreenState extends State<LoanSettingsScreen> {
             const SizedBox(height: 16),
             SwitchListTile(
               title: const Text('Allow Custom Interest Rates'),
-              subtitle: const Text('Allow setting different rates for individual loans'),
+              subtitle: const Text(
+                'Allow setting different rates for individual loans',
+              ),
               value: _allowCustomRates,
               onChanged: (value) {
                 setState(() {
@@ -311,7 +343,9 @@ class _LoanSettingsScreenState extends State<LoanSettingsScreen> {
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))],
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+              ],
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter loan ratio';
@@ -391,11 +425,13 @@ class _LoanSettingsScreenState extends State<LoanSettingsScreen> {
 
     try {
       final provider = context.read<LoanSettingsProvider>();
-      
+
       final success = await provider.updateSettings(
-        defaultMonthlyInterestRate: double.parse(_defaultRateController.text),
-        minimumInterestRate: double.parse(_minRateController.text),
-        maximumInterestRate: double.parse(_maxRateController.text),
+        monthlyInterestRatePercentage: double.parse(
+          _defaultRateController.text,
+        ),
+        minimumInterestRatePercentage: double.parse(_minRateController.text),
+        maximumInterestRatePercentage: double.parse(_maxRateController.text),
         allowCustomRates: _allowCustomRates,
         minimumLoanTermMonths: int.parse(_minTermController.text),
         maximumLoanTermMonths: int.parse(_maxTermController.text),

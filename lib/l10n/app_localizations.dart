@@ -1742,25 +1742,25 @@ abstract class AppLocalizations {
   /// No description provided for @coffeeAmount.
   ///
   /// In en, this message translates to:
-  /// **'500 CFA ☕ Coffee'**
+  /// **'☕ Coffee'**
   String get coffeeAmount;
 
   /// No description provided for @snackAmount.
   ///
   /// In en, this message translates to:
-  /// **'1,000 CFA 🥐 Snack'**
+  /// **'🥐 Snack'**
   String get snackAmount;
 
   /// No description provided for @mealAmount.
   ///
   /// In en, this message translates to:
-  /// **'2,500 CFA 🍕 Meal'**
+  /// **'🍕 Meal'**
   String get mealAmount;
 
   /// No description provided for @generousAmount.
   ///
   /// In en, this message translates to:
-  /// **'5,000 CFA ❤️ Generous'**
+  /// **'❤️ Generous'**
   String get generousAmount;
 
   /// No description provided for @supportHelpMessage.
@@ -1904,7 +1904,7 @@ abstract class AppLocalizations {
   /// No description provided for @fixedMonthlyInterest.
   ///
   /// In en, this message translates to:
-  /// **'Fixed monthly interest: CFA 3,150'**
+  /// **'Monthly interest rate (configurable)'**
   String get fixedMonthlyInterest;
 
   /// No description provided for @interestDue.
@@ -1922,7 +1922,7 @@ abstract class AppLocalizations {
   /// No description provided for @interestStructure.
   ///
   /// In en, this message translates to:
-  /// **'CFA 3,150 added each month since loan start'**
+  /// **'Configurable amount added each month since loan start'**
   String get interestStructure;
 
   /// No description provided for @monthsElapsed.
@@ -1940,13 +1940,13 @@ abstract class AppLocalizations {
   /// No description provided for @monthlyInterestFixed.
   ///
   /// In en, this message translates to:
-  /// **'Monthly Interest = Fixed CFA 3,150'**
+  /// **'Monthly Interest = Configurable Rate'**
   String get monthlyInterestFixed;
 
   /// No description provided for @totalInterestDue.
   ///
   /// In en, this message translates to:
-  /// **'Total Interest Due = CFA 3,150 × {months} months = {amount}'**
+  /// **'Total Interest Due = Monthly Rate × {months} months = {amount}'**
   String totalInterestDue(Object amount, Object months);
 
   /// No description provided for @interestAccumulatesRegardless.
@@ -2162,7 +2162,7 @@ abstract class AppLocalizations {
   /// No description provided for @manualLoanManagementContent.
   ///
   /// In en, this message translates to:
-  /// **'Manage loan applications, approvals, and repayments.\n\nLOAN SYSTEM\nThe app uses a month-by-month interest model:\n• Interest accumulates each month regardless of payments\n• Fixed monthly interest rate\n• No fixed 12-month terms\n• Total amount due = Principal + (Monthly Interest × Months Elapsed)\n\nLOAN PROCESS\n1. Member applies for loan\n2. Review loan application\n3. Approve or reject loan\n4. Track loan payments and interest\n5. Monitor outstanding balances\n\nLOAN FEATURES\n• Flexible repayment terms\n• Interest calculation tracking\n• Payment history\n• Outstanding balance monitoring\n• Loan status management\n\nLOAN STATUSES\n• Pending - Awaiting approval\n• Approved - Loan approved and active\n• Completed - Fully repaid\n• Rejected - Application denied'**
+  /// **'Manage loan applications, approvals, and repayments with percentage-based interest.\n\nPERCENTAGE-BASED LOAN SYSTEM\nThe app uses a dynamic month-by-month interest model:\n• Interest calculated as percentage of principal amount\n• Interest accumulates each month regardless of payments\n• Configurable monthly interest percentage (default: 5%)\n• No fixed 12-month terms\n• Total amount due = Principal + (Principal × Rate% × Months Elapsed)\n\nINTEREST EXAMPLES\n• 100,000 CFA loan at 5% = 5,000 CFA monthly interest\n• 50,000 CFA loan at 5% = 2,500 CFA monthly interest\n• Interest scales automatically with loan amount\n\nLOAN SETTINGS (Admin)\n• Configure monthly interest rate percentage\n• Set minimum and maximum percentage bounds (e.g., 1%-20%)\n• Enable/disable custom rates for individual loans\n• Changes apply to new loans only\n• Existing loans keep their original rates\n\nLOAN APPLICATION PROCESS\n1. Member applies for loan with desired amount\n2. System calculates monthly interest based on percentage\n3. Review loan application and terms\n4. Approve or reject loan\n5. Track loan payments and accumulated interest\n6. Monitor outstanding balances\n\nLOAN FEATURES\n• Percentage-based interest calculation\n• Interest scales with loan amount\n• Flexible repayment terms\n• Dynamic interest rate configuration\n• Real-time interest calculation\n• Payment history tracking\n• Outstanding balance monitoring\n• Loan status management\n\nLOAN STATUSES\n• Pending - Awaiting approval\n• Approved - Loan approved and active\n• Completed - Fully repaid\n• Rejected - Application denied\n\nBENEFITS OF PERCENTAGE SYSTEM\n• Fair interest proportional to loan amount\n• Transparent calculation method\n• Easy to understand and configure\n• Scales automatically for any loan size'**
   String get manualLoanManagementContent;
 
   /// No description provided for @manualTransactionManagementContent.
@@ -2180,7 +2180,7 @@ abstract class AppLocalizations {
   /// No description provided for @manualSettingsConfigurationContent.
   ///
   /// In en, this message translates to:
-  /// **'Configure the app to match your association\'s needs.\n\nCONTRIBUTION SETTINGS\n• Default Date Options - Set automatic date preferences\n• Default Host - Choose default contribution host\n• Contribution Frequency - Set regular contribution schedules\n\nFUND SETTINGS\n• Default Currency - Set primary currency (XAF)\n• Interest Rates - Configure default loan interest rates\n• Fund Categories - Customize fund types\n\nSYSTEM SETTINGS\n• Language - Switch between French and English\n• Data Backup - Create and restore data backups\n• Export Options - Configure data export formats\n\nUSER PREFERENCES\n• Dashboard Layout - Customize dashboard appearance\n• Notification Settings - Manage app notifications\n• Security Settings - Set app security preferences\n\nDATA MANAGEMENT\n• Refresh Data - Update all information\n• Export Data - Download data in various formats\n• Backup & Restore - Protect your association data'**
+  /// **'Configure the app to match your association\'s needs.\n\nCONTRIBUTION SETTINGS\n• Default Date Options - Set automatic date preferences\n• Default Host - Choose default contribution host\n• Contribution Frequency - Set regular contribution schedules\n\nLOAN SETTINGS (Admin)\n• Monthly Interest Rate Percentage - Set percentage rate (e.g., 5%)\n• Minimum/Maximum Rate Bounds - Define percentage limits (e.g., 1%-20%)\n• Custom Rates - Allow different rates for individual loans\n• Interest scales automatically with loan amount\n• Changes apply to new loans only\n\nFUND SETTINGS\n• Default Currency - Set primary currency (XAF)\n• Fund Categories - Customize fund types\n• Fund Management - Configure fund-specific rules\n\nSYSTEM SETTINGS\n• Language - Switch between French and English\n• Data Backup - Create and restore data backups\n• Export Options - Configure data export formats\n\nUSER PREFERENCES\n• Dashboard Layout - Customize dashboard appearance\n• Notification Settings - Manage app notifications\n• Security Settings - Set app security preferences\n\nDATA MANAGEMENT\n• Refresh Data - Update all information\n• Export Data - Download data in various formats\n• Backup & Restore - Protect your association data'**
   String get manualSettingsConfigurationContent;
 
   /// No description provided for @manualTipsAndBestPracticesContent.
@@ -2188,6 +2188,606 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Best practices for effective association management.\n\nDAILY OPERATIONS\n• Record contributions promptly\n• Update member information regularly\n• Review loan applications quickly\n• Monitor fund balances daily\n\nMONTHLY TASKS\n• Generate financial reports\n• Review member statuses\n• Process loan interest calculations\n• Backup association data\n\nBEST PRACTICES\n• Keep accurate records of all transactions\n• Communicate clearly with members about policies\n• Set clear contribution and loan guidelines\n• Regular data backups to prevent loss\n• Train multiple people on app usage\n\nTROUBLESHOoting\n• If app is slow, try refreshing data\n• For missing transactions, check filters\n• Contact support for technical issues\n• Keep app updated for best performance\n\nSECURITY TIPS\n• Regularly backup your data\n• Keep member information confidential\n• Use strong passwords if implemented\n• Monitor for unusual transactions\n\nGROWTH STRATEGIES\n• Track fund performance over time\n• Analyze member contribution patterns\n• Set realistic fund targets\n• Encourage regular member participation'**
   String get manualTipsAndBestPracticesContent;
+
+  /// No description provided for @loanSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan Settings'**
+  String get loanSettings;
+
+  /// No description provided for @loanSettingsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure loan interest rates and terms'**
+  String get loanSettingsDescription;
+
+  /// No description provided for @monthlyInterestRatePercentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Interest Rate (%)'**
+  String get monthlyInterestRatePercentage;
+
+  /// No description provided for @monthlyInterestRatePercentageDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Interest calculated as percentage of principal amount each month'**
+  String get monthlyInterestRatePercentageDescription;
+
+  /// No description provided for @defaultMonthlyInterestRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Default Monthly Interest Rate'**
+  String get defaultMonthlyInterestRate;
+
+  /// No description provided for @minimumInterestRatePercentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Interest Rate (%)'**
+  String get minimumInterestRatePercentage;
+
+  /// No description provided for @maximumInterestRatePercentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum Interest Rate (%)'**
+  String get maximumInterestRatePercentage;
+
+  /// No description provided for @minimumInterestRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Interest Rate'**
+  String get minimumInterestRate;
+
+  /// No description provided for @maximumInterestRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum Interest Rate'**
+  String get maximumInterestRate;
+
+  /// No description provided for @allowCustomRates.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Custom Interest Rates'**
+  String get allowCustomRates;
+
+  /// No description provided for @allowCustomRatesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow setting different rates for individual loans'**
+  String get allowCustomRatesDescription;
+
+  /// No description provided for @minimumLoanTerm.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Loan Term (months)'**
+  String get minimumLoanTerm;
+
+  /// No description provided for @maximumLoanTerm.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum Loan Term (months)'**
+  String get maximumLoanTerm;
+
+  /// No description provided for @maxLoanToContributionRatio.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Loan to Contribution Ratio'**
+  String get maxLoanToContributionRatio;
+
+  /// No description provided for @maxLoanToContributionRatioDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'How many times member contributions can be borrowed'**
+  String get maxLoanToContributionRatioDescription;
+
+  /// No description provided for @minimumContributionPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Contribution Period (months)'**
+  String get minimumContributionPeriod;
+
+  /// No description provided for @minimumContributionPeriodDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Required months of contributions before loan eligibility'**
+  String get minimumContributionPeriodDescription;
+
+  /// No description provided for @resetToDefaults.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to Defaults'**
+  String get resetToDefaults;
+
+  /// No description provided for @resetToDefaultsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore original settings (5% monthly rate)'**
+  String get resetToDefaultsDescription;
+
+  /// No description provided for @resetToDefaultsConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to reset all loan settings to their default values? This action cannot be undone.'**
+  String get resetToDefaultsConfirmation;
+
+  /// No description provided for @loanSettingsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan settings saved successfully'**
+  String get loanSettingsSaved;
+
+  /// No description provided for @settingsResetToDefaults.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings reset to defaults'**
+  String get settingsResetToDefaults;
+
+  /// No description provided for @interestRateSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Interest Rate Settings'**
+  String get interestRateSettings;
+
+  /// No description provided for @loanTermSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan Term Settings'**
+  String get loanTermSettings;
+
+  /// No description provided for @loanLimits.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan Limits'**
+  String get loanLimits;
+
+  /// No description provided for @actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get actions;
+
+  /// No description provided for @configureLoanParameters.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure loan parameters for your association'**
+  String get configureLoanParameters;
+
+  /// No description provided for @changesAffectNewLoansOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes only affect new loans. Existing loans keep their original rates.'**
+  String get changesAffectNewLoansOnly;
+
+  /// No description provided for @percentageBasedInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Percentage-Based Interest'**
+  String get percentageBasedInterest;
+
+  /// No description provided for @interestScalesWithLoanAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Interest amount automatically scales with loan size'**
+  String get interestScalesWithLoanAmount;
+
+  /// No description provided for @exampleInterestCalculation.
+  ///
+  /// In en, this message translates to:
+  /// **'Example: 5% rate on 100,000 CFA = 5,000 CFA monthly interest'**
+  String get exampleInterestCalculation;
+
+  /// No description provided for @interestCalculatedAsPercentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Interest is calculated as a percentage of the principal amount each month'**
+  String get interestCalculatedAsPercentage;
+
+  /// No description provided for @monthlyInterestAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Interest Amount'**
+  String get monthlyInterestAmount;
+
+  /// No description provided for @totalScheduledInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Scheduled Interest'**
+  String get totalScheduledInterest;
+
+  /// No description provided for @totalScheduledPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Scheduled Payment'**
+  String get totalScheduledPayment;
+
+  /// No description provided for @interestAccumulatesMonthlyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: Interest accumulates monthly based on principal amount. Actual total may vary depending on payment schedule.'**
+  String get interestAccumulatesMonthlyNote;
+
+  /// No description provided for @chooseContactMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how you\'d like to contact the developer:'**
+  String get chooseContactMethod;
+
+  /// No description provided for @whatsappContact.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get whatsappContact;
+
+  /// No description provided for @phoneCallContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Call'**
+  String get phoneCallContact;
+
+  /// No description provided for @smsContact.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS'**
+  String get smsContact;
+
+  /// No description provided for @mobileMoneyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'📱 Mobile Money'**
+  String get mobileMoneyDetails;
+
+  /// No description provided for @supportAppMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your support helps maintain and improve this app for everyone! 🙏'**
+  String get supportAppMessage;
+
+  /// No description provided for @contactDeveloper.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Developer'**
+  String get contactDeveloper;
+
+  /// No description provided for @openingWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening WhatsApp...'**
+  String get openingWhatsApp;
+
+  /// No description provided for @openingPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening phone app...'**
+  String get openingPhone;
+
+  /// No description provided for @openingSMS.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening SMS app...'**
+  String get openingSMS;
+
+  /// No description provided for @couldNotLaunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch {method}'**
+  String couldNotLaunch(String method);
+
+  /// No description provided for @supportDeveloper.
+  ///
+  /// In en, this message translates to:
+  /// **'Support the Developer'**
+  String get supportDeveloper;
+
+  /// No description provided for @licenseRestrictions.
+  ///
+  /// In en, this message translates to:
+  /// **'License & Usage Restrictions'**
+  String get licenseRestrictions;
+
+  /// No description provided for @personalUseOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'📋 Personal & Non-Commercial Use Only'**
+  String get personalUseOnly;
+
+  /// No description provided for @personalUseDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This app is licensed for personal and non-commercial use by associations and community groups only.'**
+  String get personalUseDescription;
+
+  /// No description provided for @commercialProhibited.
+  ///
+  /// In en, this message translates to:
+  /// **'🚫 Commercial Use Prohibited'**
+  String get commercialProhibited;
+
+  /// No description provided for @commercialDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Commercial use, resale, or distribution for profit is strictly prohibited without explicit written permission.'**
+  String get commercialDescription;
+
+  /// No description provided for @modificationRestricted.
+  ///
+  /// In en, this message translates to:
+  /// **'⚙️ Modification Restrictions'**
+  String get modificationRestricted;
+
+  /// No description provided for @modificationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Reverse engineering, decompiling, or creating derivative works is not permitted.'**
+  String get modificationDescription;
+
+  /// No description provided for @supportRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'💝 Support Required for Continued Use'**
+  String get supportRequired;
+
+  /// No description provided for @supportRequiredDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular support contributions help maintain and improve this free app for everyone.'**
+  String get supportRequiredDescription;
+
+  /// No description provided for @licenseViolation.
+  ///
+  /// In en, this message translates to:
+  /// **'⚠️ License Violation Consequences'**
+  String get licenseViolation;
+
+  /// No description provided for @licenseViolationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Violation of these terms may result in access restrictions or legal action.'**
+  String get licenseViolationDescription;
+
+  /// No description provided for @contactForCommercial.
+  ///
+  /// In en, this message translates to:
+  /// **'📧 Commercial Licensing Available'**
+  String get contactForCommercial;
+
+  /// No description provided for @contactForCommercialDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact the developer for commercial licensing options and enterprise features.'**
+  String get contactForCommercialDescription;
+
+  /// No description provided for @agreeToTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'By using this app, you agree to these terms and conditions.'**
+  String get agreeToTerms;
+
+  /// No description provided for @readFullLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Read Full License'**
+  String get readFullLicense;
+
+  /// No description provided for @understandRestrictions.
+  ///
+  /// In en, this message translates to:
+  /// **'I Understand'**
+  String get understandRestrictions;
+
+  /// No description provided for @licenseActivation.
+  ///
+  /// In en, this message translates to:
+  /// **'License Activation'**
+  String get licenseActivation;
+
+  /// No description provided for @enterLicenseCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter License Code'**
+  String get enterLicenseCode;
+
+  /// No description provided for @licenseCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your license code (e.g., ASSO-XXXX-XXXX-XXXX)'**
+  String get licenseCodeHint;
+
+  /// No description provided for @activateLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate License'**
+  String get activateLicense;
+
+  /// No description provided for @licenseStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'License Status'**
+  String get licenseStatus;
+
+  /// No description provided for @trialVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Trial Version'**
+  String get trialVersion;
+
+  /// No description provided for @fullVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Version'**
+  String get fullVersion;
+
+  /// No description provided for @developerVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer Version'**
+  String get developerVersion;
+
+  /// No description provided for @licenseExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'License Expired'**
+  String get licenseExpired;
+
+  /// No description provided for @daysRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days remaining'**
+  String daysRemaining(int days);
+
+  /// No description provided for @unlimitedAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Access'**
+  String get unlimitedAccess;
+
+  /// No description provided for @featureRestricted.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature Restricted'**
+  String get featureRestricted;
+
+  /// No description provided for @featureRestrictedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature requires a full license. Please activate your license or contact the developer.'**
+  String get featureRestrictedMessage;
+
+  /// No description provided for @upgradeToFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Full Version'**
+  String get upgradeToFull;
+
+  /// No description provided for @trialExpiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trial Period Expired'**
+  String get trialExpiredTitle;
+
+  /// No description provided for @trialExpiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your 30-day trial has expired. Please activate a full license to continue using the app.'**
+  String get trialExpiredMessage;
+
+  /// No description provided for @invalidLicenseCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid license code format'**
+  String get invalidLicenseCode;
+
+  /// No description provided for @licenseActivationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'License activation failed'**
+  String get licenseActivationFailed;
+
+  /// No description provided for @licenseActivatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'License activated successfully!'**
+  String get licenseActivatedSuccessfully;
+
+  /// No description provided for @currentLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Current License'**
+  String get currentLicense;
+
+  /// No description provided for @activationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activation Date'**
+  String get activationDate;
+
+  /// No description provided for @expirationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiration Date'**
+  String get expirationDate;
+
+  /// No description provided for @enabledFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled Features'**
+  String get enabledFeatures;
+
+  /// No description provided for @deactivateLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate License'**
+  String get deactivateLicense;
+
+  /// No description provided for @confirmDeactivation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to deactivate your license? This will switch to trial mode.'**
+  String get confirmDeactivation;
+
+  /// No description provided for @licenseDeactivated.
+  ///
+  /// In en, this message translates to:
+  /// **'License deactivated. Switched to trial mode.'**
+  String get licenseDeactivated;
+
+  /// No description provided for @contactForLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Developer for License'**
+  String get contactForLicense;
+
+  /// No description provided for @trialLimitations.
+  ///
+  /// In en, this message translates to:
+  /// **'Trial Limitations'**
+  String get trialLimitations;
+
+  /// No description provided for @trialLimitationsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Trial version has limited functionality. Some features may be restricted or have usage limits.'**
+  String get trialLimitationsMessage;
+
+  /// No description provided for @getFullLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Full License'**
+  String get getFullLicense;
+
+  /// No description provided for @licensePricing.
+  ///
+  /// In en, this message translates to:
+  /// **'License Pricing'**
+  String get licensePricing;
+
+  /// No description provided for @fullLicensePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Full License: 10,000 CFA (one-time payment)'**
+  String get fullLicensePrice;
+
+  /// No description provided for @licenseIncludes.
+  ///
+  /// In en, this message translates to:
+  /// **'• Includes all premium features\n• Unlimited members and transactions\n• Lifetime updates and support'**
+  String get licenseIncludes;
+
+  /// No description provided for @purchaseInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Send 10,000 CFA with message: \"LICENSE REQUEST\" and your device info. You\'ll receive your license code within 24 hours.'**
+  String get purchaseInstructions;
+
+  /// No description provided for @supportAndGetLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Support the developer and get your full license!'**
+  String get supportAndGetLicense;
+
+  /// No description provided for @backToMoreScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to More Screen'**
+  String get backToMoreScreen;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

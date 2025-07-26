@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/app_state_provider.dart';
+import '../../providers/license_provider.dart';
 
-import '../contributions/contribution_screen.dart';
 import '../contributions/contribution_list_screen.dart';
 import '../settings/contribution_settings_screen.dart';
+import '../settings/fund_settings_screen.dart';
 import '../settings/loan_settings_screen.dart';
 import '../settings/user_manual_screen.dart';
+import '../settings/license_activation_screen.dart';
 import '../penalties/penalties_list_screen.dart';
-import '../members/add_member_screen.dart';
-import '../funds/create_fund_screen.dart';
-import '../loans/loan_application_screen.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -33,7 +33,7 @@ class MoreScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildQuickActionsSection(context),
+                _buildProminentSupportSection(context),
                 const SizedBox(height: 24),
                 _buildManagementSection(context),
                 const SizedBox(height: 24),
@@ -43,6 +43,8 @@ class MoreScreen extends StatelessWidget {
                 const SizedBox(height: 24),
                 _buildSystemSection(context, appState),
                 const SizedBox(height: 24),
+                _buildLicenseSection(context),
+                const SizedBox(height: 24),
                 _buildSupportSection(context),
               ],
             ),
@@ -50,39 +52,6 @@ class MoreScreen extends StatelessWidget {
         },
       ),
     );
-  }
-
-  Widget _buildQuickActionsSection(BuildContext context) {
-    return _buildSection('Quick Actions', Icons.flash_on, Colors.blue, [
-      _buildActionTile(
-        'Make Contribution',
-        'Add money to funds',
-        Icons.add_circle,
-        Colors.green,
-        () => _navigateToContribution(context),
-      ),
-      _buildActionTile(
-        'Add New Member',
-        'Register a new member',
-        Icons.person_add,
-        Colors.blue,
-        () => _navigateToAddMember(context),
-      ),
-      _buildActionTile(
-        'Create Fund',
-        'Set up a new investment fund',
-        Icons.account_balance,
-        Colors.purple,
-        () => _navigateToCreateFund(context),
-      ),
-      _buildActionTile(
-        'Apply for Loan',
-        'Submit a loan application',
-        Icons.request_quote,
-        Colors.orange,
-        () => _navigateToLoanApplication(context),
-      ),
-    ]);
   }
 
   Widget _buildManagementSection(BuildContext context) {
@@ -183,10 +152,36 @@ class MoreScreen extends StatelessWidget {
       ),
       _buildActionTile(
         'Loan Settings',
-        'Configure loan interest rates and terms',
+        'Configure percentage-based interest rates and terms',
         Icons.settings_applications,
         Colors.indigo,
         () => _navigateToLoanSettings(context),
+      ),
+      _buildActionTile(
+        'Fund Settings',
+        'Set default amounts for fund contributions',
+        Icons.account_balance,
+        Colors.green,
+        () => _navigateToFundSettings(context),
+      ),
+      Consumer<LicenseProvider>(
+        builder: (context, licenseProvider, child) {
+          final l10n = AppLocalizations.of(context)!;
+          final licenseInfo = licenseProvider.getLicenseInfo();
+          final statusText = licenseProvider.isTrialMode
+              ? 'Trial - ${licenseInfo['daysRemaining'] ?? 0} days left'
+              : licenseProvider.hasFullLicense
+              ? 'Full License Active'
+              : 'License Required';
+
+          return _buildActionTile(
+            l10n.licenseActivation,
+            statusText,
+            Icons.vpn_key,
+            licenseProvider.isLicensed ? Colors.green : Colors.orange,
+            () => _navigateToLicenseActivation(context),
+          );
+        },
       ),
       _buildActionTile(
         'App Settings',
@@ -252,15 +247,137 @@ class MoreScreen extends StatelessWidget {
     ]);
   }
 
-  Widget _buildSupportSection(BuildContext context) {
-    return _buildSection('Support the Developer', Icons.favorite, Colors.pink, [
+  Widget _buildProminentSupportSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.brown.shade400, Colors.brown.shade600],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.brown.withValues(alpha: 0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.local_cafe,
+                  size: 32,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.supportDeveloper,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.supportAppDevelopment,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white.withValues(alpha: 0.9),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => _showBuyMeCoffeeDialog(context),
+              icon: const Icon(Icons.local_cafe, size: 24),
+              label: Text(
+                l10n.buyMeACoffee,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.brown.shade700,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 2,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            l10n.supportAppMessage,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white.withValues(alpha: 0.8),
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLicenseSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return _buildSection(l10n.licenseRestrictions, Icons.gavel, Colors.red, [
       _buildActionTile(
-        'Buy me a coffee ☕',
-        'Support app development',
-        Icons.local_cafe,
-        Colors.brown,
+        l10n.personalUseOnly,
+        l10n.personalUseDescription,
+        Icons.person,
+        Colors.green,
+        () => _showLicenseDialog(context),
+      ),
+      _buildActionTile(
+        l10n.commercialProhibited,
+        l10n.commercialDescription,
+        Icons.business,
+        Colors.red,
+        () => _showLicenseDialog(context),
+      ),
+      _buildActionTile(
+        l10n.contactForCommercial,
+        l10n.contactForCommercialDescription,
+        Icons.email,
+        Colors.blue,
         () => _showBuyMeCoffeeDialog(context),
       ),
+    ]);
+  }
+
+  Widget _buildSupportSection(BuildContext context) {
+    return _buildSection('Additional Support', Icons.favorite, Colors.pink, [
       _buildActionTile(
         'Rate the App',
         'Leave a review on the app store',
@@ -333,34 +450,6 @@ class MoreScreen extends StatelessWidget {
     );
   }
 
-  void _navigateToContribution(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ContributionScreen()),
-    );
-  }
-
-  void _navigateToAddMember(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AddMemberScreen()),
-    );
-  }
-
-  void _navigateToCreateFund(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const CreateFundScreen()),
-    );
-  }
-
-  void _navigateToLoanApplication(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const LoanApplicationScreen()),
-    );
-  }
-
   void _navigateToContributionList(BuildContext context) {
     Navigator.push(
       context,
@@ -395,6 +484,20 @@ class MoreScreen extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const LoanSettingsScreen()),
+    );
+  }
+
+  void _navigateToFundSettings(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const FundSettingsScreen()),
+    );
+  }
+
+  void _navigateToLicenseActivation(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LicenseActivationScreen()),
     );
   }
 
@@ -527,6 +630,7 @@ class MoreScreen extends StatelessWidget {
   }
 
   void _showBuyMeCoffeeDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -534,9 +638,9 @@ class MoreScreen extends StatelessWidget {
           children: [
             const Icon(Icons.local_cafe, size: 32, color: Colors.brown),
             const SizedBox(width: 12),
-            const Text(
-              'Buy me a coffee ☕',
-              style: TextStyle(color: Colors.brown),
+            Text(
+              l10n.buyMeACoffee,
+              style: const TextStyle(color: Colors.brown),
             ),
           ],
         ),
@@ -545,15 +649,16 @@ class MoreScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'Thank you for using our Association Management App! ❤️',
-                style: TextStyle(fontSize: 16),
-              ),
+              Text(l10n.thankYouMessage, style: const TextStyle(fontSize: 16)),
               const SizedBox(height: 16),
-              const Text(
-                'If this app has been helpful to you and your organization, consider supporting the developer with a small contribution.',
-                style: TextStyle(fontSize: 14),
+              Text(l10n.supportMessage, style: const TextStyle(fontSize: 14)),
+              const SizedBox(height: 20),
+              Text(
+                l10n.chooseContactMethod,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
+              const SizedBox(height: 12),
+              _buildContactOptions(context, l10n),
               const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.all(16),
@@ -564,9 +669,9 @@ class MoreScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    const Text(
-                      '📱 Mobile Money',
-                      style: TextStyle(
+                    Text(
+                      l10n.mobileMoneyDetails,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                         color: Colors.brown,
@@ -577,10 +682,10 @@ class MoreScreen extends StatelessWidget {
                       children: [
                         const Icon(Icons.phone, color: Colors.brown),
                         const SizedBox(width: 8),
-                        Expanded(
+                        const Expanded(
                           child: SelectableText(
                             '+237674667234',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.brown,
@@ -595,9 +700,9 @@ class MoreScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'MTN Mobile Money / Orange Money',
-                      style: TextStyle(
+                    Text(
+                      l10n.mtnOrangeMoney,
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Colors.brown,
                         fontStyle: FontStyle.italic,
@@ -607,24 +712,24 @@ class MoreScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                '💡 Suggested amounts:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                l10n.suggestedAmounts,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
                 children: [
-                  _buildAmountChip('2,500 CFA', '☕ Coffee'),
-                  _buildAmountChip('3,500 CFA', '🥐 Snack'),
-                  _buildAmountChip('4,500 CFA', '🍕 Meal'),
-                  _buildAmountChip('5,000 CFA', '❤️ Generous'),
+                  _buildAmountChip('2,500 CFA', l10n.coffeeAmount),
+                  _buildAmountChip('3,500 CFA', l10n.snackAmount),
+                  _buildAmountChip('4,500 CFA', l10n.mealAmount),
+                  _buildAmountChip('5,000 CFA', l10n.generousAmount),
                 ],
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Your support helps maintain and improve this app for everyone! 🙏',
-                style: TextStyle(
+              Text(
+                l10n.supportAppMessage,
+                style: const TextStyle(
                   fontSize: 12,
                   fontStyle: FontStyle.italic,
                   color: Colors.grey,
@@ -636,7 +741,7 @@ class MoreScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Maybe Later'),
+            child: Text(l10n.maybeLater),
           ),
           ElevatedButton.icon(
             onPressed: () {
@@ -644,7 +749,7 @@ class MoreScreen extends StatelessWidget {
               _copyPhoneNumber(context);
             },
             icon: const Icon(Icons.copy),
-            label: const Text('Copy Number'),
+            label: Text(l10n.copyNumber),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.brown,
               foregroundColor: Colors.white,
@@ -664,13 +769,313 @@ class MoreScreen extends StatelessWidget {
   }
 
   void _copyPhoneNumber(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Clipboard.setData(const ClipboardData(text: '+237674667234'));
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Phone number copied to clipboard! 📋'),
+      SnackBar(
+        content: Text(l10n.phoneNumberCopied),
         backgroundColor: Colors.brown,
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
+    );
+  }
+
+  Widget _buildContactOptions(BuildContext context, AppLocalizations l10n) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildContactButton(
+          context,
+          l10n.whatsappContact,
+          Icons.chat,
+          Colors.green,
+          () => _launchWhatsApp(context, l10n),
+        ),
+        _buildContactButton(
+          context,
+          l10n.phoneCallContact,
+          Icons.phone,
+          Colors.blue,
+          () => _launchPhoneCall(context, l10n),
+        ),
+        _buildContactButton(
+          context,
+          l10n.smsContact,
+          Icons.sms,
+          Colors.orange,
+          () => _launchSMS(context, l10n),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContactButton(
+    BuildContext context,
+    String label,
+    IconData icon,
+    Color color,
+    VoidCallback onPressed,
+  ) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: ElevatedButton.icon(
+          onPressed: onPressed,
+          icon: Icon(icon, size: 20),
+          label: Text(
+            label,
+            style: const TextStyle(fontSize: 12),
+            textAlign: TextAlign.center,
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: color,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _launchWhatsApp(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
+    final phoneNumber = '+237674667234';
+    final message = Uri.encodeComponent(
+      '${l10n.thankYouMessage}\n\n${l10n.supportMessage}',
+    );
+    final whatsappUrl = 'https://wa.me/$phoneNumber?text=$message';
+
+    if (!context.mounted) return;
+    _showLoadingSnackBar(context, l10n.openingWhatsApp);
+
+    try {
+      final uri = Uri.parse(whatsappUrl);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        if (context.mounted) {
+          _showErrorSnackBar(context, l10n.couldNotLaunch('WhatsApp'));
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        _showErrorSnackBar(context, l10n.couldNotLaunch('WhatsApp'));
+      }
+    }
+  }
+
+  Future<void> _launchPhoneCall(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
+    final phoneNumber = '+237674667234';
+    final phoneUrl = 'tel:$phoneNumber';
+
+    if (!context.mounted) return;
+    _showLoadingSnackBar(context, l10n.openingPhone);
+
+    try {
+      final uri = Uri.parse(phoneUrl);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      } else {
+        if (context.mounted) {
+          _showErrorSnackBar(
+            context,
+            l10n.couldNotLaunch(l10n.phoneCallContact),
+          );
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        _showErrorSnackBar(context, l10n.couldNotLaunch(l10n.phoneCallContact));
+      }
+    }
+  }
+
+  Future<void> _launchSMS(BuildContext context, AppLocalizations l10n) async {
+    final phoneNumber = '+237674667234';
+    final message = Uri.encodeComponent(
+      '${l10n.thankYouMessage}\n\n${l10n.supportMessage}',
+    );
+    final smsUrl = 'sms:$phoneNumber?body=$message';
+
+    if (!context.mounted) return;
+    _showLoadingSnackBar(context, l10n.openingSMS);
+
+    try {
+      final uri = Uri.parse(smsUrl);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      } else {
+        if (context.mounted) {
+          _showErrorSnackBar(context, l10n.couldNotLaunch('SMS'));
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        _showErrorSnackBar(context, l10n.couldNotLaunch('SMS'));
+      }
+    }
+  }
+
+  void _showLoadingSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.blue,
+        duration: const Duration(seconds: 1),
+      ),
+    );
+  }
+
+  void _showErrorSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
+  void _showLicenseDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            const Icon(Icons.gavel, size: 32, color: Colors.red),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                l10n.licenseRestrictions,
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildLicenseItem(
+                l10n.personalUseOnly,
+                l10n.personalUseDescription,
+                Icons.person,
+                Colors.green,
+              ),
+              const SizedBox(height: 16),
+              _buildLicenseItem(
+                l10n.commercialProhibited,
+                l10n.commercialDescription,
+                Icons.business,
+                Colors.red,
+              ),
+              const SizedBox(height: 16),
+              _buildLicenseItem(
+                l10n.modificationRestricted,
+                l10n.modificationDescription,
+                Icons.code,
+                Colors.orange,
+              ),
+              const SizedBox(height: 16),
+              _buildLicenseItem(
+                l10n.supportRequired,
+                l10n.supportRequiredDescription,
+                Icons.favorite,
+                Colors.pink,
+              ),
+              const SizedBox(height: 16),
+              _buildLicenseItem(
+                l10n.licenseViolation,
+                l10n.licenseViolationDescription,
+                Icons.warning,
+                Colors.red,
+              ),
+              const SizedBox(height: 16),
+              _buildLicenseItem(
+                l10n.contactForCommercial,
+                l10n.contactForCommercialDescription,
+                Icons.email,
+                Colors.blue,
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Text(
+                  l10n.agreeToTerms,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(l10n.understandRestrictions),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _showBuyMeCoffeeDialog(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.brown,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.contactForCommercial.split(' ')[0]), // "Contact"
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLicenseItem(
+    String title,
+    String description,
+    IconData icon,
+    Color color,
+  ) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, color: color, size: 24),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(description, style: const TextStyle(fontSize: 12)),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

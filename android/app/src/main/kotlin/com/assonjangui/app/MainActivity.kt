@@ -1,4 +1,4 @@
-package com.example.asso_njangui
+package com.assonjangui.app
 
 import io.flutter.embedding.android.FlutterActivity
 

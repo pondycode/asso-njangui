@@ -1,20 +1,20 @@
 import 'package:intl/intl.dart';
 
 class CurrencyFormatter {
-  static const String _currencySymbol = 'XAF';
+  static const String _currencySymbol = 'F';
   static const String _locale = 'fr_FR';
 
-  /// Format amount as XAF currency
+  /// Format amount as F currency
   static String format(double amount, {bool showSymbol = true}) {
     final formatter = NumberFormat.currency(
       locale: _locale,
       symbol: showSymbol ? '$_currencySymbol ' : '',
-      decimalDigits: 0, // XAF typically doesn't use decimal places
+      decimalDigits: 0, // F typically doesn't use decimal places
     );
     return formatter.format(amount);
   }
 
-  /// Format amount as XAF currency with compact notation (K, M, etc.)
+  /// Format amount as F currency with compact notation (K, M, etc.)
   static String formatCompact(double amount, {bool showSymbol = true}) {
     final formatter = NumberFormat.compactCurrency(
       locale: _locale,

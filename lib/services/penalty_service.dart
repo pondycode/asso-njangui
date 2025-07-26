@@ -1,8 +1,5 @@
 import 'package:uuid/uuid.dart';
 import '../models/penalty.dart';
-import '../models/member.dart';
-import '../models/loan.dart';
-import '../models/transaction.dart';
 import 'database_service.dart';
 
 class PenaltyService {
