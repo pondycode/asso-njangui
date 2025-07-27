@@ -43,7 +43,6 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
       body: Column(
         children: [
           _buildSearchBar(),
-          _buildFilterChips(),
           _buildTransactionCount(),
           Expanded(child: _buildTransactionList()),
         ],
@@ -71,40 +70,6 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
             _searchQuery = value.toLowerCase();
           });
         },
-      ),
-    );
-  }
-
-  Widget _buildFilterChips() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          if (_selectedType != null)
-            FilterChip(
-              label: Text(_getTransactionTypeLabel(_selectedType!)),
-              onSelected: (selected) {},
-              onDeleted: () {
-                setState(() {
-                  _selectedType = null;
-                });
-              },
-            ),
-          if (_startDate != null || _endDate != null) ...[
-            const SizedBox(width: 8),
-            FilterChip(
-              label: Text(_getDateRangeLabel()),
-              onSelected: (selected) {},
-              onDeleted: () {
-                setState(() {
-                  _startDate = null;
-                  _endDate = null;
-                });
-              },
-            ),
-          ],
-        ],
       ),
     );
   }
@@ -218,19 +183,210 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
           );
         }
 
-        return ListView.builder(
-          itemCount: transactions.length,
-          itemBuilder: (context, index) {
-            final transaction = transactions[index];
-            final member = appState.getMemberById(transaction.memberId);
-            final fund = transaction.fundId != null
-                ? appState.getFundById(transaction.fundId!)
-                : null;
+        return Column(
+          children: [
+            _buildTotalAmountCard(transactions),
+            Expanded(
+              child: ListView.builder(
+                itemCount: transactions.length,
+                itemBuilder: (context, index) {
+                  final transaction = transactions[index];
+                  final member = appState.getMemberById(transaction.memberId);
+                  final fund = transaction.fundId != null
+                      ? appState.getFundById(transaction.fundId!)
+                      : null;
 
-            return _buildTransactionCard(transaction, member, fund);
-          },
+                  return _buildTransactionCard(transaction, member, fund);
+                },
+              ),
+            ),
+          ],
         );
       },
+    );
+  }
+
+  Widget _buildTotalAmountCard(List<dynamic> transactions) {
+    // Calculate total amount considering transaction direction
+    final totalAmount = transactions.fold(
+      0.0,
+      (sum, transaction) => sum + transaction.effectiveAmount,
+    );
+
+    // Calculate positive and negative totals separately
+    final positiveTotal = transactions
+        .where((t) => t.effectiveAmount > 0)
+        .fold(0.0, (sum, t) => sum + t.effectiveAmount);
+
+    final negativeTotal = transactions
+        .where((t) => t.effectiveAmount < 0)
+        .fold(0.0, (sum, t) => sum + t.effectiveAmount.abs());
+
+    final transactionCount = transactions.length;
+    final isPositive = totalAmount >= 0;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: isPositive
+              ? [Colors.green[600]!, Colors.green[700]!]
+              : [Colors.red[600]!, Colors.red[700]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: (isPositive ? Colors.green : Colors.red).withValues(
+              alpha: 0.3,
+            ),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    isPositive ? Icons.trending_up : Icons.trending_down,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Net Transaction Amount',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${isPositive ? '+' : ''}${CurrencyFormatter.format(totalAmount)}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '$transactionCount transaction${transactionCount != 1 ? 's' : ''}',
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.8),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            if (positiveTotal > 0 && negativeTotal > 0) ...[
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.add_circle,
+                                color: Colors.white.withValues(alpha: 0.8),
+                                size: 16,
+                              ),
+                              const SizedBox(width: 4),
+                              const Text(
+                                'Inflow',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            CurrencyFormatter.format(positiveTotal),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 1,
+                      height: 40,
+                      color: Colors.white.withValues(alpha: 0.3),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.remove_circle,
+                                color: Colors.white.withValues(alpha: 0.8),
+                                size: 16,
+                              ),
+                              const SizedBox(width: 4),
+                              const Text(
+                                'Outflow',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            CurrencyFormatter.format(negativeTotal),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 
@@ -681,16 +837,5 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
       case TransactionType.adjustment:
         return Icons.tune;
     }
-  }
-
-  String _getDateRangeLabel() {
-    if (_startDate != null && _endDate != null) {
-      return '${DateFormat('MMM dd').format(_startDate!)} - ${DateFormat('MMM dd').format(_endDate!)}';
-    } else if (_startDate != null) {
-      return 'From ${DateFormat('MMM dd').format(_startDate!)}';
-    } else if (_endDate != null) {
-      return 'Until ${DateFormat('MMM dd').format(_endDate!)}';
-    }
-    return '';
   }
 }

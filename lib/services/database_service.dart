@@ -387,6 +387,18 @@ class DatabaseService {
     await _penalties.delete(id);
   }
 
+  // Clear all data (for restore operations)
+  Future<void> clearAllData() async {
+    await _members.clear();
+    await _funds.clear();
+    await _transactions.clear();
+    await _loans.clear();
+    await _contributions.clear();
+    await _penalties.clear();
+    await _penaltyRules.clear();
+    // Don't clear settings as they contain user preferences
+  }
+
   // Close all boxes
   Future<void> close() async {
     await _members.close();

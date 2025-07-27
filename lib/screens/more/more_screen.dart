@@ -13,6 +13,7 @@ import '../settings/loan_settings_screen.dart';
 import '../settings/user_manual_screen.dart';
 import '../settings/license_activation_screen.dart';
 import '../penalties/penalties_list_screen.dart';
+import '../backup/backup_restore_screen.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -224,11 +225,11 @@ class MoreScreen extends StatelessWidget {
         () => _refreshData(context, appState),
       ),
       _buildActionTile(
-        'Backup Data',
-        'Create data backup',
+        'Backup & Restore',
+        'Create backup or restore data',
         Icons.backup,
         Colors.green,
-        () => _showFeatureComingSoon(context, 'Data Backup'),
+        () => _navigateToBackupRestore(context),
       ),
       _buildActionTile(
         'About',
@@ -498,6 +499,13 @@ class MoreScreen extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const LicenseActivationScreen()),
+    );
+  }
+
+  void _navigateToBackupRestore(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const BackupRestoreScreen()),
     );
   }
 
